@@ -1,0 +1,16 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+
+# Build results
+Debug/
+Release/
+
+# Rider / ReSharper
+_ReSharper*
+*.DotSettings.user
