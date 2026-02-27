@@ -1,12 +1,146 @@
 ﻿<Window x:Class="TakojsnjeSporocanje.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TakojsnjeSporocanje"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Takojšnje sporočanje"
+        Height="650"
+        Width="1100"
+        MinHeight="550"
+        MinWidth="900">
 
-    </Grid>
+    <DockPanel>
+
+        <!-- ===== MENU ===== -->
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Datoteka">
+                <MenuItem Header="Izhod" Name="MenuExit"/>
+            </MenuItem>
+
+            <MenuItem Header="Stiki"/>
+
+            <MenuItem Header="Orodja">
+                <MenuItem Header="Nastavitve"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- ===== GLAVNI GRID ===== -->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ===================== LEVI PANEL ===================== -->
+            <Border Grid.Column="0"
+                    Background="#F3F3F3"
+                    Padding="15"
+                    BorderBrush="LightGray"
+                    BorderThickness="0,0,1,0">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- USER INFO -->
+                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                        <TextBlock Text="Vzdevek"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="Tadej"
+                                   FontSize="16"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <!-- STATUS -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,15">
+                        <TextBlock Text="Status"
+                                   FontWeight="SemiBold"/>
+                        <ComboBox Height="28">
+                            <ComboBoxItem Content="Online"/>
+                            <ComboBoxItem Content="Away"/>
+                            <ComboBoxItem Content="Busy"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- STIKI -->
+                    <StackPanel Grid.Row="2" Margin="0,0,0,5">
+                        <TextBlock Text="Stiki"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+
+                    <ListBox Grid.Row="3">
+                        <ListBoxItem Content="Miha"/>
+                        <ListBoxItem Content="Nina"/>
+                        <ListBoxItem Content="Daris"/>
+                        <ListBoxItem Content="Eva"/>
+                    </ListBox>
+
+                </Grid>
+            </Border>
+
+            <!-- ===================== DESNI PANEL ===================== -->
+            <Grid Grid.Column="1" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- NASLOV -->
+                <TextBlock Text="Pogovor z: Miha"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Margin="0,0,0,15"/>
+
+                <!-- POGOVOR -->
+                <Border Grid.Row="1"
+                        BorderBrush="LightGray"
+                        BorderThickness="1"
+                        CornerRadius="5"
+                        Padding="15">
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBlock TextWrapping="Wrap"
+           FontSize="14"
+           LineHeight="22">
+
+    <Run Text="Miha: Živjo!"/>
+    <LineBreak/>
+    <Run Text="Tadej: Hej!"/>
+    <LineBreak/>
+    <Run Text="Miha: Se vidiva danes?"/>
+    <LineBreak/>
+    <Run Text="Tadej: Ja, ob 17h?"/>
+
+                        </TextBlock>
+                    </ScrollViewer>
+
+                </Border>
+
+                <!-- VNOS -->
+                <Grid Grid.Row="2" Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="90"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="0"
+                             Height="35"
+                             VerticalContentAlignment="Center"/>
+
+                    <Button Grid.Column="1"
+                            Content="😊"
+                            Margin="8,0"/>
+
+                    <Button Grid.Column="2"
+                            Content="Pošlji"/>
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+    </DockPanel>
 </Window>
