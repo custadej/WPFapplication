@@ -8,25 +8,19 @@
 
     <DockPanel>
 
-        <!-- ================= MENU ================= -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Datoteka">
-                <MenuItem Header="Izhod"
-                          Click="MenuExit_Click"/>
+                <MenuItem Header="Izhod" Click="MenuExit_Click"/>
             </MenuItem>
 
             <MenuItem Header="Stiki">
-                <MenuItem Header="Dodaj"
-                          Click="MenuAddContact_Click"/>
-                <MenuItem Header="Odstrani"
-                          Click="MenuRemoveContact_Click"/>
-                <MenuItem Header="Uredi"
-                          Click="MenuEditContact_Click"/>
+                <MenuItem Header="Dodaj" Click="MenuAddContact_Click"/>
+                <MenuItem Header="Odstrani" Click="MenuRemoveContact_Click"/>
+                <MenuItem Header="Uredi" Click="MenuEditContact_Click"/>
             </MenuItem>
 
             <MenuItem Header="Orodja">
-                <MenuItem Header="Nastavitve"
-                          Click="MenuSettings_Click"/>
+                <MenuItem Header="Nastavitve" Click="MenuSettings_Click"/>
             </MenuItem>
         </Menu>
 
@@ -36,7 +30,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- LEVI PANEL -->
+            <!-- LEVA STRAN -->
             <Border Grid.Column="0"
                     Background="#f0f2f5"
                     Padding="15"
@@ -45,16 +39,13 @@
 
                 <StackPanel>
 
-                    <TextBlock Text="Vzdevek"
-                               FontWeight="Bold"/>
+                    <TextBlock Text="Vzdevek" FontWeight="Bold"/>
                     <TextBox Name="NicknameTextBox"
                              Text="Tadej"
                              Margin="0,5,0,15"/>
 
-                    <TextBlock Text="Status"
-                               FontWeight="Bold"/>
-                    <ComboBox Height="28"
-                              Margin="0,5,0,15">
+                    <TextBlock Text="Status" FontWeight="Bold"/>
+                    <ComboBox Height="28" Margin="0,5,0,15">
                         <ComboBoxItem Content="Online"/>
                         <ComboBoxItem Content="Away"/>
                         <ComboBoxItem Content="Busy"/>
@@ -64,19 +55,52 @@
                                FontWeight="Bold"
                                Margin="0,0,0,5"/>
 
-                    <ListBox Name="ContactsListBox"
-                             Height="350"
-                             SelectionChanged="ContactsListBox_SelectionChanged">
-                        <ListBoxItem Content="Miha"/>
-                        <ListBoxItem Content="Nina"/>
-                        <ListBoxItem Content="Daris"/>
-                        <ListBoxItem Content="Eva"/>
-                    </ListBox>
+                    <ListView ItemsSource="{Binding Contacts}"
+                              SelectedItem="{Binding SelectedContact, Mode=TwoWay}">
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding ImagePath}"
+                                           Width="30"
+                                           Height="30"
+                                           Margin="0,0,10,0"/>
+
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Nickname}"
+                                                   FontWeight="Bold"/>
+
+                                        <TextBlock Text="{Binding Status}"
+                                                   FontSize="11">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Online">
+                                                            <Setter Property="Foreground" Value="Green"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Away">
+                                                            <Setter Property="Foreground" Value="Orange"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Busy">
+                                                            <Setter Property="Foreground" Value="Red"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                    </ListView>
 
                 </StackPanel>
             </Border>
 
-            <!-- DESNI PANEL -->
+            <!-- DESNA STRAN -->
             <Grid Grid.Column="1" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -84,8 +108,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Name="ChatTitleTextBlock"
-                           Text="Pogovor z: Miha"
+                <TextBlock Text="{Binding SelectedContact.Nickname, StringFormat=Pogovor z: {0}}"
                            FontSize="20"
                            FontWeight="Bold"
                            Margin="0,0,0,15"/>
@@ -98,7 +121,7 @@
                     <ScrollViewer Name="ChatScrollViewer"
                                   VerticalScrollBarVisibility="Auto">
 
-                        <TextBlock Name="ChatContentTextBlock"
+                        <TextBlock Text="{Binding SelectedContact.Conversation}"
                                    TextWrapping="Wrap"
                                    FontSize="14"
                                    LineHeight="22"/>
@@ -116,8 +139,7 @@
 
                     <TextBox Name="MessageTextBox"
                              Grid.Column="0"
-                             Height="35"
-                             VerticalContentAlignment="Center"/>
+                             Height="35"/>
 
                     <Button Grid.Column="1"
                             Click="EmojiButton_Click">
@@ -136,6 +158,7 @@
                             <TextBlock Text="Pošlji"/>
                         </StackPanel>
                     </Button>
+
                 </Grid>
 
             </Grid>
