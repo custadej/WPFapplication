@@ -4,83 +4,79 @@
         Title="Takojšnje sporočanje"
         Height="650"
         Width="1100"
-        MinHeight="550"
-        MinWidth="900">
+        FontFamily="Segoe UI">
 
     <DockPanel>
 
-        <!-- ===== MENU ===== -->
+        <!-- ================= MENU ================= -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Datoteka">
-                <MenuItem Header="Izhod" Name="MenuExit"/>
+                <MenuItem Header="Izhod"
+                          Click="MenuExit_Click"/>
             </MenuItem>
 
-            <MenuItem Header="Stiki"/>
+            <MenuItem Header="Stiki">
+                <MenuItem Header="Dodaj"
+                          Click="MenuAddContact_Click"/>
+                <MenuItem Header="Odstrani"
+                          Click="MenuRemoveContact_Click"/>
+                <MenuItem Header="Uredi"
+                          Click="MenuEditContact_Click"/>
+            </MenuItem>
 
             <MenuItem Header="Orodja">
-                <MenuItem Header="Nastavitve"/>
+                <MenuItem Header="Nastavitve"
+                          Click="MenuSettings_Click"/>
             </MenuItem>
         </Menu>
 
-        <!-- ===== GLAVNI GRID ===== -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="280"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ===================== LEVI PANEL ===================== -->
+            <!-- LEVI PANEL -->
             <Border Grid.Column="0"
-                    Background="#F3F3F3"
+                    Background="#f0f2f5"
                     Padding="15"
-                    BorderBrush="LightGray"
+                    BorderBrush="#dcdcdc"
                     BorderThickness="0,0,1,0">
 
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+                <StackPanel>
 
-                    <!-- USER INFO -->
-                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
-                        <TextBlock Text="Vzdevek"
-                                   FontWeight="SemiBold"/>
-                        <TextBlock Text="Tadej"
-                                   FontSize="16"
-                                   FontWeight="Bold"/>
-                    </StackPanel>
+                    <TextBlock Text="Vzdevek"
+                               FontWeight="Bold"/>
+                    <TextBox Name="NicknameTextBox"
+                             Text="Tadej"
+                             Margin="0,5,0,15"/>
 
-                    <!-- STATUS -->
-                    <StackPanel Grid.Row="1" Margin="0,0,0,15">
-                        <TextBlock Text="Status"
-                                   FontWeight="SemiBold"/>
-                        <ComboBox Height="28">
-                            <ComboBoxItem Content="Online"/>
-                            <ComboBoxItem Content="Away"/>
-                            <ComboBoxItem Content="Busy"/>
-                        </ComboBox>
-                    </StackPanel>
+                    <TextBlock Text="Status"
+                               FontWeight="Bold"/>
+                    <ComboBox Height="28"
+                              Margin="0,5,0,15">
+                        <ComboBoxItem Content="Online"/>
+                        <ComboBoxItem Content="Away"/>
+                        <ComboBoxItem Content="Busy"/>
+                    </ComboBox>
 
-                    <!-- STIKI -->
-                    <StackPanel Grid.Row="2" Margin="0,0,0,5">
-                        <TextBlock Text="Stiki"
-                                   FontWeight="SemiBold"/>
-                    </StackPanel>
+                    <TextBlock Text="Stiki"
+                               FontWeight="Bold"
+                               Margin="0,0,0,5"/>
 
-                    <ListBox Grid.Row="3">
+                    <ListBox Name="ContactsListBox"
+                             Height="350"
+                             SelectionChanged="ContactsListBox_SelectionChanged">
                         <ListBoxItem Content="Miha"/>
                         <ListBoxItem Content="Nina"/>
                         <ListBoxItem Content="Daris"/>
                         <ListBoxItem Content="Eva"/>
                     </ListBox>
 
-                </Grid>
+                </StackPanel>
             </Border>
 
-            <!-- ===================== DESNI PANEL ===================== -->
+            <!-- DESNI PANEL -->
             <Grid Grid.Column="1" Margin="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -88,59 +84,61 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- NASLOV -->
-                <TextBlock Text="Pogovor z: Miha"
+                <TextBlock Name="ChatTitleTextBlock"
+                           Text="Pogovor z: Miha"
                            FontSize="20"
                            FontWeight="Bold"
                            Margin="0,0,0,15"/>
 
-                <!-- POGOVOR -->
                 <Border Grid.Row="1"
-                        BorderBrush="LightGray"
+                        BorderBrush="#dcdcdc"
                         BorderThickness="1"
-                        CornerRadius="5"
                         Padding="15">
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <TextBlock TextWrapping="Wrap"
-           FontSize="14"
-           LineHeight="22">
+                    <ScrollViewer Name="ChatScrollViewer"
+                                  VerticalScrollBarVisibility="Auto">
 
-    <Run Text="Miha: Živjo!"/>
-    <LineBreak/>
-    <Run Text="Tadej: Hej!"/>
-    <LineBreak/>
-    <Run Text="Miha: Se vidiva danes?"/>
-    <LineBreak/>
-    <Run Text="Tadej: Ja, ob 17h?"/>
+                        <TextBlock Name="ChatContentTextBlock"
+                                   TextWrapping="Wrap"
+                                   FontSize="14"
+                                   LineHeight="22"/>
 
-                        </TextBlock>
                     </ScrollViewer>
 
                 </Border>
 
-                <!-- VNOS -->
                 <Grid Grid.Row="2" Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="50"/>
-                        <ColumnDefinition Width="90"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Grid.Column="0"
+                    <TextBox Name="MessageTextBox"
+                             Grid.Column="0"
                              Height="35"
                              VerticalContentAlignment="Center"/>
 
                     <Button Grid.Column="1"
-                            Content="😊"
-                            Margin="8,0"/>
+                            Click="EmojiButton_Click">
+                        <Image Source="Images/smile.png"
+                               Width="18"
+                               Height="18"/>
+                    </Button>
 
                     <Button Grid.Column="2"
-                            Content="Pošlji"/>
+                            Click="SendButton_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Images/send.png"
+                                   Width="16"
+                                   Height="16"
+                                   Margin="0,0,5,0"/>
+                            <TextBlock Text="Pošlji"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
 
             </Grid>
-
         </Grid>
     </DockPanel>
 </Window>
