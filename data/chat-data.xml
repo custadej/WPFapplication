@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ChatData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Contacts>
+    <Contact>
+      <Nickname>Niko</Nickname>
+      <LastName>Cvetko</LastName>
+      <Status>Online</Status>
+      <Email>niko@gmail.com</Email>
+      <Phone>041 420 067</Phone>
+      <Conversation>Niko: Živjo!
+Tadej: aaaaaaaaaaaaaaa
+Niko: OK :)
+Tadej: test
+
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+Niko: OK :)
+Tadej: prosem
+Niko: OK :)
+Tadej: torej?
+Niko: OK :)
+Tadej: ok ok
+ :) :)
+Niko: OK :)
+Tadej: :)
+Niko: OK :)
+Tadej: aa :)
+Niko: OK :)
+</Conversation>
+      <ImagePath>Images/user.png</ImagePath>
+      <LastActive>Danes</LastActive>
+    </Contact>
+    <Contact>
+      <Nickname>Aljaž</Nickname>
+      <LastName>Šešo</LastName>
+      <Status>Away</Status>
+      <Email>aljaz@gmail.com</Email>
+      <Phone>041 222 222</Phone>
+      <Conversation>Aljaž: Hej!
+</Conversation>
+      <ImagePath>Images/user.png</ImagePath>
+      <LastActive>Včeraj</LastActive>
+    </Contact>
+    <Contact>
+      <Nickname>Sašo</Nickname>
+      <LastName>Kozoderc</LastName>
+      <Status>Away</Status>
+      <Email>saso@gmail.com</Email>
+      <Phone>069123123</Phone>
+      <Conversation>Sašo: Zivjo!
+</Conversation>
+      <ImagePath>Images/user.png</ImagePath>
+      <LastActive>1+ Dni</LastActive>
+    </Contact>
+    <Contact>
+      <Nickname>Miha</Nickname>
+      <LastName>Ljubec</LastName>
+      <Status>Busy</Status>
+      <Email>miha@gmail.com</Email>
+      <Phone>123123123</Phone>
+      <Conversation>Miha: Zivjo!
+</Conversation>
+      <ImagePath>Images/user.png</ImagePath>
+      <LastActive>2 leti</LastActive>
+    </Contact>
+    <Contact>
+      <Nickname>Domen</Nickname>
+      <LastName>Arnuš</LastName>
+      <Status>Online</Status>
+      <Email>domen@gmail.com</Email>
+      <Phone>098099009</Phone>
+      <Conversation>Domen: Zivjo!
+</Conversation>
+      <ImagePath>Images/user.png</ImagePath>
+      <LastActive>Danes</LastActive>
+    </Contact>
+  </Contacts>
+  <CurrentUser>
+    <Nickname>Tadej</Nickname>
+    <LastName>Čuš</LastName>
+    <Status>Away</Status>
+    <Email>cus.tadej07@gmail.com</Email>
+    <Phone>070 343 488</Phone>
+    <ImagePath>Images/user.png</ImagePath>
+    <About>Dijak</About>
+    <City>Kidričevo</City>
+    <Country>Slovenija</Country>
+  </CurrentUser>
+</ChatData>

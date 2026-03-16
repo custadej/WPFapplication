@@ -24,6 +24,7 @@ namespace TakojsnjeSporocanje
         private Contact selectedContact;
         private Contact subscribedContact;
         private bool isUpdatingData;
+        private string composerMessageText = string.Empty;
 
         public Contact SelectedContact
         {
@@ -57,6 +58,16 @@ namespace TakojsnjeSporocanje
         };
 
         public string ContactCountText => GetContactCountText(AppData?.Contacts.Count ?? 0);
+
+        public string ComposerMessageText
+        {
+            get => composerMessageText;
+            set
+            {
+                composerMessageText = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainWindow()
         {
@@ -235,14 +246,14 @@ namespace TakojsnjeSporocanje
             RefreshConversationMessages();
         }
 
-        private void SendButton_Click(object sender, RoutedEventArgs e)
+        private void MessageComposer_SendMessageRequested(object sender, RoutedEventArgs e)
         {
-            if (SelectedContact == null || string.IsNullOrWhiteSpace(MessageTextBox.Text))
+            if (SelectedContact == null || string.IsNullOrWhiteSpace(ComposerMessageText))
             {
                 return;
             }
 
-            string message = MessageTextBox.Text.Trim();
+            string message = ComposerMessageText.Trim();
             SelectedContact.Conversation += AppData.CurrentUser.Nickname + ": " + message + "\n";
 
             string response = message.ToLower().Contains("kako")
@@ -251,13 +262,10 @@ namespace TakojsnjeSporocanje
 
             SelectedContact.Conversation += SelectedContact.Nickname + ": " + response + "\n";
 
-            MessageTextBox.Clear();
+            ComposerMessageText = string.Empty;
+            MessageComposer.ClearMessage();
+            MessageComposer.FocusInput();
             Dispatcher.BeginInvoke(new Action(() => ChatScrollViewer.ScrollToEnd()), DispatcherPriority.Background);
-        }
-
-        private void EmojiButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageTextBox.Text += " :)";
         }
 
         private void ComboBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -334,6 +342,7 @@ namespace TakojsnjeSporocanje
                 {
                     CurrentConversationMessages.Add(new ChatMessage
                     {
+                        SenderName = line.Trim(),
                         Text = line.Trim(),
                         IsCurrentUser = false
                     });
@@ -345,10 +354,54 @@ namespace TakojsnjeSporocanje
 
                 CurrentConversationMessages.Add(new ChatMessage
                 {
+                    SenderName = senderName,
                     Text = text,
                     IsCurrentUser = senderName == AppData.CurrentUser.Nickname
                 });
             }
+        }
+
+        private void DeleteChatMessage_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedContact == null || sender is not MenuItem menuItem || menuItem.DataContext is not ChatMessage messageToDelete)
+            {
+                return;
+            }
+
+            if (!CurrentConversationMessages.Contains(messageToDelete))
+            {
+                return;
+            }
+
+            CurrentConversationMessages.Remove(messageToDelete);
+            RebuildSelectedConversation();
+        }
+
+        private void RebuildSelectedConversation()
+        {
+            if (SelectedContact == null)
+            {
+                return;
+            }
+
+            if (CurrentConversationMessages.Count == 0)
+            {
+                SelectedContact.Conversation = string.Empty;
+                return;
+            }
+
+            string rebuiltConversation = string.Empty;
+
+            foreach (ChatMessage message in CurrentConversationMessages)
+            {
+                string senderName = string.IsNullOrWhiteSpace(message.SenderName)
+                    ? (message.IsCurrentUser ? AppData.CurrentUser.Nickname : SelectedContact.Nickname)
+                    : message.SenderName;
+
+                rebuiltConversation += senderName + ": " + message.Text + "\n";
+            }
+
+            SelectedContact.Conversation = rebuiltConversation;
         }
 
         private ChatData CreateDefaultData()

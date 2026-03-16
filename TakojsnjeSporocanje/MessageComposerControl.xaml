@@ -1,0 +1,111 @@
+<UserControl x:Class="TakojsnjeSporocanje.MessageComposerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="92"
+             d:DesignWidth="760">
+    <UserControl.Resources>
+        <Style x:Key="ComposerGhostButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFEAF1FF"/>
+            <Setter Property="Foreground" Value="#FF2455D6"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="18"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComposerPrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF2F6BFF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="18"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Border Background="White"
+            CornerRadius="28"
+            Padding="18"
+            BorderBrush="#FFE2E8F0"
+            BorderThickness="1">
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="70"/>
+                <ColumnDefinition Width="140"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0"
+                    Height="52"
+                    Background="#FFF8FAFC"
+                    BorderBrush="#FFD6DCE7"
+                    BorderThickness="1"
+                    CornerRadius="20"
+                    Padding="16,6"
+                    VerticalAlignment="Center">
+                <TextBox x:Name="ComposerTextBox"
+                         Background="Transparent"
+                         BorderThickness="0"
+                         FontSize="15"
+                         Foreground="#FF0F172A"
+                         Padding="0"
+                         AcceptsReturn="True"
+                         TextWrapping="WrapWithOverflow"
+                         HorizontalScrollBarVisibility="Disabled"
+                         VerticalScrollBarVisibility="Auto"
+                         VerticalContentAlignment="Top"
+                         Text="{Binding MessageText, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         TextChanged="ComposerTextBox_TextChanged"
+                         KeyDown="ComposerTextBox_KeyDown"/>
+            </Border>
+
+            <Button Grid.Column="1"
+                    Height="52"
+                    VerticalAlignment="Center"
+                    Margin="12,0,10,0"
+                    Style="{StaticResource ComposerGhostButtonStyle}"
+                    Click="EmojiButton_Click">
+                <Image Source="Images/smile.png" Width="18" Height="18"/>
+            </Button>
+
+            <Button Grid.Column="2"
+                    Height="52"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource ComposerPrimaryButtonStyle}"
+                    Click="SendButton_Click">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Image Source="Images/send.png"
+                           Width="16"
+                           Height="16"
+                           Margin="0,0,6,0"/>
+                    <TextBlock Text="Po&#353;lji"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Border>
+</UserControl>
