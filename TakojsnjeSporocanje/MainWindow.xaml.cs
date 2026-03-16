@@ -1,23 +1,29 @@
-﻿using System;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Xml.Serialization;
 
 namespace TakojsnjeSporocanje
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private const string DefaultDataFileName = "chat-data.xml";
+
         public ChatData AppData { get; set; }
 
         public ObservableCollection<ChatMessage> CurrentConversationMessages { get; } = new ObservableCollection<ChatMessage>();
 
         private Contact selectedContact;
         private Contact subscribedContact;
+        private bool isUpdatingData;
 
         public Contact SelectedContact
         {
@@ -56,52 +62,67 @@ namespace TakojsnjeSporocanje
         {
             InitializeComponent();
 
-            AppData = new ChatData
-            {
-                CurrentUser = new UserProfile
-                {
-                    Nickname = "Tadej",
-                    LastName = "Čuš",
-                    Status = "Online",
-                    Email = "cus.tadej07@gmail.com",
-                    Phone = "070 343 488",
-                    ImagePath = "Images/user.png",
-                    About = "Dijak",
-                    City = "Kidričevo",
-                    Country = "Slovenija"
-                }
-            };
-
-            AppData.Contacts.Add(new Contact
-            {
-                Nickname = "Niko",
-                LastName = "Cvetko",
-                Status = "Online",
-                Email = "niko@gmail.com",
-                Phone = "041 420 067",
-                Conversation = "Niko: Živjo!\n",
-                ImagePath = "Images/user.png",
-                LastActive = "Danes"
-            });
-
-            AppData.Contacts.Add(new Contact
-            {
-                Nickname = "Aljaž",
-                LastName = "Šešo",
-                Status = "Away",
-                Email = "aljaz@gmail.com",
-                Phone = "041 222 222",
-                Conversation = "Aljaz: Hej!\n",
-                ImagePath = "Images/user.png",
-                LastActive = "Včeraj"
-            });
-
-            AppData.Contacts.CollectionChanged += Contacts_CollectionChanged;
+            AppData = CreateDefaultData();
+            AttachDataHandlers(AppData);
+            LoadStartupData();
 
             DataContext = this;
-            SelectedContact = AppData.Contacts[0];
+            SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
             UpdateContactMenuState();
             OnPropertyChanged(nameof(ContactCountText));
+        }
+
+        private void MenuImport_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Title = "Uvozi XML podatke",
+                Filter = "XML datoteke (*.xml)|*.xml|Vse datoteke (*.*)|*.*",
+                DefaultExt = ".xml"
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            try
+            {
+                ChatData importedData = LoadDataFromFile(dialog.FileName);
+                ReplaceAppData(importedData);
+                SaveDefaultDataSilently();
+                ModernDialogWindow.ShowInfo(this, "Uvoz uspesen", "Podatki so bili uspesno uvozeni iz XML datoteke.");
+            }
+            catch
+            {
+                ModernDialogWindow.ShowInfo(this, "Napaka pri uvozu", "XML datoteke ni bilo mogoce uvoziti.");
+            }
+        }
+
+        private void MenuExport_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Title = "Izvozi XML podatke",
+                Filter = "XML datoteke (*.xml)|*.xml|Vse datoteke (*.*)|*.*",
+                DefaultExt = ".xml",
+                FileName = DefaultDataFileName
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            try
+            {
+                SaveDataToFile(dialog.FileName);
+                ModernDialogWindow.ShowInfo(this, "Izvoz uspesen", "Podatki so bili uspesno izvozeni v XML datoteko.");
+            }
+            catch
+            {
+                ModernDialogWindow.ShowInfo(this, "Napaka pri izvozu", "XML datoteke ni bilo mogoce shraniti.");
+            }
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
@@ -256,7 +277,34 @@ namespace TakojsnjeSporocanje
 
         private void Contacts_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (e.OldItems != null)
+            {
+                foreach (Contact oldContact in e.OldItems)
+                {
+                    oldContact.PropertyChanged -= Contact_PropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (Contact newContact in e.NewItems)
+                {
+                    newContact.PropertyChanged += Contact_PropertyChanged;
+                }
+            }
+
             OnPropertyChanged(nameof(ContactCountText));
+            SaveDefaultDataSilently();
+        }
+
+        private void CurrentUser_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SaveDefaultDataSilently();
+        }
+
+        private void Contact_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            SaveDefaultDataSilently();
         }
 
         private void SelectedContact_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -301,6 +349,190 @@ namespace TakojsnjeSporocanje
                     IsCurrentUser = senderName == AppData.CurrentUser.Nickname
                 });
             }
+        }
+
+        private ChatData CreateDefaultData()
+        {
+            ChatData data = new ChatData
+            {
+                CurrentUser = new UserProfile
+                {
+                    Nickname = "Tadej",
+                    LastName = "Čuš",
+                    Status = "Online",
+                    Email = "cus.tadej07@gmail.com",
+                    Phone = "070 343 488",
+                    ImagePath = "Images/user.png",
+                    About = "Dijak",
+                    City = "Kidričevo",
+                    Country = "Slovenija"
+                }
+            };
+
+            data.Contacts.Add(new Contact
+            {
+                Nickname = "Niko",
+                LastName = "Cvetko",
+                Status = "Online",
+                Email = "niko@gmail.com",
+                Phone = "041 420 067",
+                Conversation = "Niko: Živjo!\n",
+                ImagePath = "Images/user.png",
+                LastActive = "Danes"
+            });
+
+            data.Contacts.Add(new Contact
+            {
+                Nickname = "Aljaž",
+                LastName = "Šešo",
+                Status = "Away",
+                Email = "aljaz@gmail.com",
+                Phone = "041 222 222",
+                Conversation = "Aljaž: Hej!\n",
+                ImagePath = "Images/user.png",
+                LastActive = "Včeraj"
+            });
+
+            return data;
+        }
+
+        private void LoadStartupData()
+        {
+            string defaultPath = GetDefaultDataFilePath();
+
+            if (File.Exists(defaultPath))
+            {
+                try
+                {
+                    ChatData loadedData = LoadDataFromFile(defaultPath);
+                    ReplaceAppData(loadedData);
+                    return;
+                }
+                catch
+                {
+                    ModernDialogWindow.ShowInfo(this, "Napaka pri nalaganju", "Privzete XML datoteke ni bilo mogoce prebrati. Nalozeni so zacetni podatki.");
+                }
+            }
+
+            SaveDefaultDataSilently();
+        }
+
+        private void ReplaceAppData(ChatData newData)
+        {
+            isUpdatingData = true;
+
+            if (AppData != null)
+            {
+                DetachDataHandlers(AppData);
+            }
+
+            AppData = NormalizeData(newData);
+            AttachDataHandlers(AppData);
+
+            OnPropertyChanged(nameof(AppData));
+            OnPropertyChanged(nameof(ContactCountText));
+
+            SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
+
+            isUpdatingData = false;
+        }
+
+        private void AttachDataHandlers(ChatData data)
+        {
+            if (data == null)
+            {
+                return;
+            }
+
+            data.Contacts.CollectionChanged += Contacts_CollectionChanged;
+
+            foreach (Contact contact in data.Contacts)
+            {
+                contact.PropertyChanged += Contact_PropertyChanged;
+            }
+
+            if (data.CurrentUser != null)
+            {
+                data.CurrentUser.PropertyChanged += CurrentUser_PropertyChanged;
+            }
+        }
+
+        private void DetachDataHandlers(ChatData data)
+        {
+            if (data == null)
+            {
+                return;
+            }
+
+            data.Contacts.CollectionChanged -= Contacts_CollectionChanged;
+
+            foreach (Contact contact in data.Contacts)
+            {
+                contact.PropertyChanged -= Contact_PropertyChanged;
+            }
+
+            if (data.CurrentUser != null)
+            {
+                data.CurrentUser.PropertyChanged -= CurrentUser_PropertyChanged;
+            }
+        }
+
+        private ChatData NormalizeData(ChatData data)
+        {
+            if (data == null)
+            {
+                return CreateDefaultData();
+            }
+
+            if (data.CurrentUser == null)
+            {
+                data.CurrentUser = new UserProfile();
+            }
+
+            if (data.Contacts == null)
+            {
+                data.Contacts = new ObservableCollection<Contact>();
+            }
+
+            return data;
+        }
+
+        private ChatData LoadDataFromFile(string filePath)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ChatData));
+
+            using FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+            ChatData loadedData = serializer.Deserialize(stream) as ChatData;
+            return NormalizeData(loadedData);
+        }
+
+        private void SaveDataToFile(string filePath)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ChatData));
+
+            using FileStream stream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+            serializer.Serialize(stream, AppData);
+        }
+
+        private void SaveDefaultDataSilently()
+        {
+            if (isUpdatingData || AppData == null)
+            {
+                return;
+            }
+
+            try
+            {
+                SaveDataToFile(GetDefaultDataFilePath());
+            }
+            catch
+            {
+            }
+        }
+
+        private string GetDefaultDataFilePath()
+        {
+            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultDataFileName);
         }
 
         private static string GetContactCountText(int count)

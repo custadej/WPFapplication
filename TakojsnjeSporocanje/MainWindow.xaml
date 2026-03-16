@@ -192,6 +192,19 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Datoteka" Style="{StaticResource TopMenuItemStyle}">
+                <MenuItem Header="Uvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuImport_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#x2193;"
+                                   Style="{StaticResource MenuIconTextStyle}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Izvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuExport_Click">
+                    <MenuItem.Icon>
+                        <TextBlock Text="&#x2191;"
+                                   Style="{StaticResource MenuIconTextStyle}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="Izhod" Style="{StaticResource SubMenuItemStyle}" Click="MenuExit_Click">
                     <MenuItem.Icon>
                         <TextBlock Text="&#x21AA;"
