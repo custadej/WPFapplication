@@ -1,18 +1,19 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace TakojsnjeSporocanje
 {
-    public class Contact : INotifyPropertyChanged
+    public class UserProfile : INotifyPropertyChanged
     {
         private string nickname;
         private string lastName;
         private string status;
         private string email;
         private string phone;
-        private string conversation;
         private string imagePath;
-        private string lastActive;
+        private string about;
+        private string city;
+        private string country;
 
         public string Nickname
         {
@@ -44,22 +45,28 @@ namespace TakojsnjeSporocanje
             set { phone = value; OnPropertyChanged(); }
         }
 
-        public string Conversation
-        {
-            get => conversation;
-            set { conversation = value; OnPropertyChanged(); }
-        }
-
         public string ImagePath
         {
             get => imagePath;
             set { imagePath = value; OnPropertyChanged(); }
         }
 
-        public string LastActive
+        public string About
         {
-            get => lastActive;
-            set { lastActive = value; OnPropertyChanged(); }
+            get => about;
+            set { about = value; OnPropertyChanged(); }
+        }
+
+        public string City
+        {
+            get => city;
+            set { city = value; OnPropertyChanged(); }
+        }
+
+        public string Country
+        {
+            get => country;
+            set { country = value; OnPropertyChanged(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

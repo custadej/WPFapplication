@@ -1,137 +1,325 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace TakojsnjeSporocanje
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public ObservableCollection<Contact> Contacts { get; set; }
+        public ChatData AppData { get; set; }
+
+        public ObservableCollection<ChatMessage> CurrentConversationMessages { get; } = new ObservableCollection<ChatMessage>();
 
         private Contact selectedContact;
+        private Contact subscribedContact;
+
         public Contact SelectedContact
         {
             get => selectedContact;
             set
             {
+                if (subscribedContact != null)
+                {
+                    subscribedContact.PropertyChanged -= SelectedContact_PropertyChanged;
+                }
+
                 selectedContact = value;
+                subscribedContact = value;
+
+                if (subscribedContact != null)
+                {
+                    subscribedContact.PropertyChanged += SelectedContact_PropertyChanged;
+                }
+
+                RefreshConversationMessages();
                 OnPropertyChanged();
+                UpdateContactMenuState();
             }
         }
+
+        public ObservableCollection<string> UserStatuses { get; } = new ObservableCollection<string>
+        {
+            "Online",
+            "Away",
+            "Busy"
+        };
+
+        public string ContactCountText => GetContactCountText(AppData?.Contacts.Count ?? 0);
 
         public MainWindow()
         {
             InitializeComponent();
 
-            Contacts = new ObservableCollection<Contact>
+            AppData = new ChatData
             {
-                new Contact
+                CurrentUser = new UserProfile
                 {
-                    Nickname = "Miha",
+                    Nickname = "Tadej",
+                    LastName = "Čuš",
                     Status = "Online",
-                    Email = "miha@gmail.com",
-                    Conversation = "Miha: Živjo!\n",
+                    Email = "cus.tadej07@gmail.com",
+                    Phone = "070 343 488",
                     ImagePath = "Images/user.png",
-                    LastActive = "Danes"
-                },
-                new Contact
-                {
-                    Nickname = "Nina",
-                    Status = "Away",
-                    Email = "nina@gmail.com",
-                    Conversation = "Nina: Hej!\n",
-                    ImagePath = "Images/user.png",
-                    LastActive = "Včeraj"
+                    About = "Dijak",
+                    City = "Kidričevo",
+                    Country = "Slovenija"
                 }
             };
 
+            AppData.Contacts.Add(new Contact
+            {
+                Nickname = "Niko",
+                LastName = "Cvetko",
+                Status = "Online",
+                Email = "niko@gmail.com",
+                Phone = "041 420 067",
+                Conversation = "Niko: Živjo!\n",
+                ImagePath = "Images/user.png",
+                LastActive = "Danes"
+            });
+
+            AppData.Contacts.Add(new Contact
+            {
+                Nickname = "Aljaž",
+                LastName = "Šešo",
+                Status = "Away",
+                Email = "aljaz@gmail.com",
+                Phone = "041 222 222",
+                Conversation = "Aljaz: Hej!\n",
+                ImagePath = "Images/user.png",
+                LastActive = "Včeraj"
+            });
+
+            AppData.Contacts.CollectionChanged += Contacts_CollectionChanged;
+
             DataContext = this;
-            SelectedContact = Contacts[0];
+            SelectedContact = AppData.Contacts[0];
+            UpdateContactMenuState();
+            OnPropertyChanged(nameof(ContactCountText));
         }
 
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Close();
         }
 
         private void MenuAddContact_Click(object sender, RoutedEventArgs e)
         {
-            InputDialog dialog =
-                new InputDialog("Vnesite ime novega stika:", "NovStik");
-
-            dialog.Owner = this;
-
-            if (dialog.ShowDialog() == true)
+            ContactWindow dialog = new ContactWindow("Dodaj stik")
             {
-                if (!string.IsNullOrWhiteSpace(dialog.ResponseText))
-                {
-                    Contacts.Add(new Contact
-                    {
-                        Nickname = dialog.ResponseText,
-                        Status = "Online",
-                        Email = "",
-                        Conversation = dialog.ResponseText + ": Živjo!\n",
-                        ImagePath = "Images/user.png",
-                        LastActive = "Danes"
-                    });
-                }
+                Owner = this
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
             }
+
+            Contact newContact = new Contact
+            {
+                Nickname = dialog.EditableContact.Nickname,
+                LastName = dialog.EditableContact.LastName,
+                Status = dialog.EditableContact.Status,
+                Email = dialog.EditableContact.Email,
+                Phone = dialog.EditableContact.Phone,
+                Conversation = string.IsNullOrWhiteSpace(dialog.EditableContact.Conversation)
+                    ? $"{dialog.EditableContact.Nickname}: Zivjo!\n"
+                    : dialog.EditableContact.Conversation,
+                ImagePath = dialog.EditableContact.ImagePath,
+                LastActive = dialog.EditableContact.LastActive
+            };
+
+            AppData.Contacts.Add(newContact);
+            SelectedContact = newContact;
         }
 
         private void MenuRemoveContact_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedContact != null)
-                Contacts.Remove(SelectedContact);
+            if (SelectedContact == null)
+            {
+                ModernDialogWindow.ShowInfo(this, "Ni izbranega stika", "Najprej izberi stik, ki ga zelis odstraniti.");
+                return;
+            }
+
+            Contact contactToRemove = SelectedContact;
+            bool confirmed = ModernDialogWindow.ShowConfirmation(
+                this,
+                "Odstrani stik",
+                $"Ali si preprican, da zelis odstraniti stik {contactToRemove.Nickname}?",
+                "Izbrisi",
+                true);
+
+            if (!confirmed)
+            {
+                return;
+            }
+
+            AppData.Contacts.Remove(contactToRemove);
+            SelectedContact = null;
         }
 
         private void MenuEditContact_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedContact == null) return;
-
-            InputDialog dialog =
-                new InputDialog("Novo ime stika:", SelectedContact.Nickname);
-
-            dialog.Owner = this;
-
-            if (dialog.ShowDialog() == true)
+            if (SelectedContact == null)
             {
-                if (!string.IsNullOrWhiteSpace(dialog.ResponseText))
-                {
-                    SelectedContact.Nickname = dialog.ResponseText;
-                }
+                ModernDialogWindow.ShowInfo(this, "Ni izbranega stika", "Najprej izberi stik, ki ga zelis urediti.");
+                return;
             }
+
+            ContactWindow dialog = new ContactWindow("Uredi stik", SelectedContact)
+            {
+                Owner = this
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            SelectedContact.Nickname = dialog.EditableContact.Nickname;
+            SelectedContact.LastName = dialog.EditableContact.LastName;
+            SelectedContact.Status = dialog.EditableContact.Status;
+            SelectedContact.Email = dialog.EditableContact.Email;
+            SelectedContact.Phone = dialog.EditableContact.Phone;
+            SelectedContact.ImagePath = dialog.EditableContact.ImagePath;
+            SelectedContact.LastActive = dialog.EditableContact.LastActive;
         }
 
         private void MenuSettings_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Nastavitve pridejo kasneje.");
+            SettingsWindow dialog = new SettingsWindow(AppData.CurrentUser)
+            {
+                Owner = this
+            };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            AppData.CurrentUser.Nickname = dialog.EditableProfile.Nickname;
+            AppData.CurrentUser.LastName = dialog.EditableProfile.LastName;
+            AppData.CurrentUser.Email = dialog.EditableProfile.Email;
+            AppData.CurrentUser.Phone = dialog.EditableProfile.Phone;
+            AppData.CurrentUser.ImagePath = dialog.EditableProfile.ImagePath;
+            AppData.CurrentUser.About = dialog.EditableProfile.About;
+            AppData.CurrentUser.City = dialog.EditableProfile.City;
+            AppData.CurrentUser.Country = dialog.EditableProfile.Country;
+            RefreshConversationMessages();
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedContact == null) return;
-            if (string.IsNullOrWhiteSpace(MessageTextBox.Text)) return;
+            if (SelectedContact == null || string.IsNullOrWhiteSpace(MessageTextBox.Text))
+            {
+                return;
+            }
 
-            string message = MessageTextBox.Text;
-
-            SelectedContact.Conversation +=
-                NicknameTextBox.Text + ": " + message + "\n";
+            string message = MessageTextBox.Text.Trim();
+            SelectedContact.Conversation += AppData.CurrentUser.Nickname + ": " + message + "\n";
 
             string response = message.ToLower().Contains("kako")
-                ? "Super sem 😄"
-                : "OK 👍";
+                ? "Super sem :)"
+                : "OK :)";
 
-            SelectedContact.Conversation +=
-                SelectedContact.Nickname + ": " + response + "\n";
+            SelectedContact.Conversation += SelectedContact.Nickname + ": " + response + "\n";
 
             MessageTextBox.Clear();
-            ChatScrollViewer.ScrollToEnd();
+            Dispatcher.BeginInvoke(new Action(() => ChatScrollViewer.ScrollToEnd()), DispatcherPriority.Background);
         }
 
         private void EmojiButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageTextBox.Text += "😊";
+            MessageTextBox.Text += " :)";
+        }
+
+        private void ComboBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            if (sender is ComboBox comboBox && !comboBox.IsDropDownOpen)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void UpdateContactMenuState()
+        {
+            bool hasSelectedContact = SelectedContact != null;
+            RemoveContactMenuItem.IsEnabled = hasSelectedContact;
+            EditContactMenuItem.IsEnabled = hasSelectedContact;
+        }
+
+        private void Contacts_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(ContactCountText));
+        }
+
+        private void SelectedContact_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Contact.Conversation))
+            {
+                RefreshConversationMessages();
+                Dispatcher.BeginInvoke(new Action(() => ChatScrollViewer.ScrollToEnd()), DispatcherPriority.Background);
+            }
+        }
+
+        private void RefreshConversationMessages()
+        {
+            CurrentConversationMessages.Clear();
+
+            if (SelectedContact == null || string.IsNullOrWhiteSpace(SelectedContact.Conversation))
+            {
+                return;
+            }
+
+            string[] lines = SelectedContact.Conversation.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                int separatorIndex = line.IndexOf(':');
+                if (separatorIndex <= 0 || separatorIndex >= line.Length - 1)
+                {
+                    CurrentConversationMessages.Add(new ChatMessage
+                    {
+                        Text = line.Trim(),
+                        IsCurrentUser = false
+                    });
+                    continue;
+                }
+
+                string senderName = line.Substring(0, separatorIndex).Trim();
+                string text = line.Substring(separatorIndex + 1).Trim();
+
+                CurrentConversationMessages.Add(new ChatMessage
+                {
+                    Text = text,
+                    IsCurrentUser = senderName == AppData.CurrentUser.Nickname
+                });
+            }
+        }
+
+        private static string GetContactCountText(int count)
+        {
+            int lastTwoDigits = count % 100;
+            int lastDigit = count % 10;
+
+            if (lastTwoDigits is >= 11 and <= 14)
+            {
+                return $"{count} oseb";
+            }
+
+            return lastDigit switch
+            {
+                1 => $"{count} oseba",
+                2 => $"{count} osebi",
+                3 or 4 => $"{count} osebe",
+                _ => $"{count} oseb"
+            };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
