@@ -2,17 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Omrežna povezava"
-        Width="480"
-        SizeToContent="Height"
+        Width="480" SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#0A0F1E"
+        Background="{StaticResource BrBgDeep}"
         FontFamily="Segoe UI">
 
     <Window.Resources>
 
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextSecondary}"/>
             <Setter Property="FontSize" Value="13"/>
         </Style>
 
@@ -20,12 +19,12 @@
             <Setter Property="Margin" Value="0,4,0,14"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Padding" Value="14,0"/>
-            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
-            <Setter Property="Background" Value="#1E293B"/>
-            <Setter Property="CaretBrush" Value="#3B82F6"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource BrAccent}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -40,7 +39,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource BrAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -59,8 +58,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="14"
-                                Padding="{TemplateBinding Padding}">
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -69,9 +67,38 @@
         </Style>
 
         <Style TargetType="RadioButton">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,0,20,0"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="FontSize"         Value="14"/>
+            <Setter Property="Margin"           Value="0,0,20,0"/>
+            <Setter Property="Foreground"       Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Grid Width="18" Height="18" Margin="0,0,8,0">
+                                <Ellipse x:Name="Outer"
+                                         Stroke="{StaticResource BrBorderSubtle}"
+                                         StrokeThickness="1.5"
+                                         Fill="{StaticResource BrBgTertiary}"/>
+                                <Ellipse x:Name="Inner"
+                                         Width="8" Height="8"
+                                         Fill="{StaticResource BrAccent}"
+                                         Visibility="Hidden"/>
+                            </Grid>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Inner" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="Outer" Property="Stroke" Value="{StaticResource BrAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Outer" Property="Stroke" Value="{StaticResource BrAccentSoft}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
     </Window.Resources>
@@ -82,89 +109,60 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#0F172A"
-                CornerRadius="18"
-                Padding="24"
-                BorderBrush="#FFFFFF12"
-                BorderThickness="1">
+        <Border Background="{StaticResource BrBgSidebar}"
+                CornerRadius="18" Padding="24"
+                BorderBrush="{StaticResource BrBorderSubtle}" BorderThickness="1">
             <StackPanel>
                 <TextBlock Text="Omrežna povezava"
-                           FontSize="20"
-                           FontWeight="SemiBold"
-                           Foreground="#F1F5F9"
+                           FontSize="20" FontWeight="SemiBold"
+                           Foreground="{StaticResource BrTextPrimary}"
                            Margin="0,0,0,6"/>
                 <TextBlock Text="Poveži dve instanci aplikacije prek omrežja TCP."
-                           Margin="0,0,0,20"
-                           TextWrapping="Wrap"/>
+                           Margin="0,0,0,20" TextWrapping="Wrap"/>
 
-                <!-- Mode selection -->
-                <TextBlock Text="Način delovanja"
-                           FontWeight="SemiBold"
-                           Margin="0,0,0,8"/>
+                <TextBlock Text="Način delovanja" FontWeight="SemiBold" Margin="0,0,0,8"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                    <RadioButton x:Name="ServerRadio"
-                                 Content="Strežnik (gostuj)"
-                                 IsChecked="True"
-                                 Checked="ModeChanged"/>
-                    <RadioButton x:Name="ClientRadio"
-                                 Content="Odjemalec (poveži)"
-                                 Checked="ModeChanged"/>
+                    <RadioButton x:Name="ServerRadio" Content="Strežnik (gostuj)" IsChecked="True" Checked="ModeChanged"/>
+                    <RadioButton x:Name="ClientRadio" Content="Odjemalec (poveži)" Checked="ModeChanged"/>
                 </StackPanel>
 
-                <!-- Server panel -->
                 <StackPanel x:Name="ServerPanel">
                     <TextBlock Text="Tvoj IP naslov" FontWeight="SemiBold"/>
-                    <TextBox x:Name="LocalIPBox"
-                             IsReadOnly="True"
-                             Background="#0A0F1E"
-                             Foreground="#475569"/>
-
+                    <TextBox x:Name="LocalIPBox" IsReadOnly="True"
+                             Background="{StaticResource BrBgDeep}"
+                             Foreground="{StaticResource BrTextMuted}"/>
                     <TextBlock Text="Vrata (port)" FontWeight="SemiBold"/>
                     <TextBox x:Name="ServerPortBox" Text="5000"/>
-
-                    <TextBlock TextWrapping="Wrap"
-                               Margin="0,4,0,0"
+                    <TextBlock TextWrapping="Wrap" Margin="0,4,0,0"
                                Text="Zaženi strežnik in posreduj IP ter vrata drugi osebi, ki se bo priključila."/>
                 </StackPanel>
 
-                <!-- Client panel -->
                 <StackPanel x:Name="ClientPanel" Visibility="Collapsed">
                     <TextBlock Text="IP naslov strežnika" FontWeight="SemiBold"/>
                     <TextBox x:Name="ServerIPBox" Text="127.0.0.1"/>
-
                     <TextBlock Text="Vrata (port)" FontWeight="SemiBold"/>
                     <TextBox x:Name="ClientPortBox" Text="5000"/>
                 </StackPanel>
 
-                <!-- Status -->
                 <Border x:Name="StatusBorder"
-                        Background="#10B98120"
-                        CornerRadius="12"
-                        Padding="14,10"
-                        Margin="0,16,0,0"
-                        Visibility="Collapsed">
+                        Background="{StaticResource BrBorderGlow}"
+                        CornerRadius="12" Padding="14,10"
+                        Margin="0,16,0,0" Visibility="Collapsed">
                     <TextBlock x:Name="StatusText"
-                               Foreground="#10B981"
-                               TextWrapping="Wrap"
-                               FontSize="13"/>
+                               Foreground="{StaticResource BrAccentSoft}"
+                               TextWrapping="Wrap" FontSize="13"/>
                 </Border>
             </StackPanel>
         </Border>
 
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,16,0,0">
-            <Button x:Name="CancelButton"
-                    Content="Zapri"
-                    Background="#1E293B"
-                    Foreground="#94A3B8"
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button x:Name="CancelButton" Content="Zapri"
+                    Background="{StaticResource BrBgSecondary}"
+                    Foreground="{StaticResource BrTextSecondary}"
                     Click="Cancel_Click"/>
-            <Button x:Name="ConnectButton"
-                    Content="Poveži"
+            <Button x:Name="ConnectButton" Content="Poveži"
                     Background="{StaticResource BrAccentGradient}"
-                    Foreground="White"
-                    Margin="0"
+                    Foreground="White" Margin="0"
                     Click="Connect_Click"/>
         </StackPanel>
     </Grid>

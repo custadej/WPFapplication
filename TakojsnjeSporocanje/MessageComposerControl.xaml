@@ -24,7 +24,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFFFFF0A"/>
+                                <Setter Property="Background" Value="{StaticResource BrHoverOverlay}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

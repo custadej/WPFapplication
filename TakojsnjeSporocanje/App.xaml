@@ -5,59 +5,134 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
 
-        <!-- Colors — navy-blue premium palette -->
-        <Color x:Key="ColBgDeep">#0A0F1E</Color>
-        <Color x:Key="ColBgPrimary">#0F172A</Color>
-        <Color x:Key="ColBgSecondary">#1E293B</Color>
-        <Color x:Key="ColBgTertiary">#243347</Color>
-        <Color x:Key="ColAccent">#3B82F6</Color>
-        <Color x:Key="ColAccentSoft">#60A5FA</Color>
+        <!-- ═══ RAW COLORS ═══ -->
+        <Color x:Key="ColBgDeep">#0D0F1A</Color>
+        <Color x:Key="ColBgSidebar">#1A1D2E</Color>
+        <Color x:Key="ColBgPrimary">#1E2235</Color>
+        <Color x:Key="ColBgSecondary">#242842</Color>
+        <Color x:Key="ColBgTertiary">#2E3255</Color>
+        <Color x:Key="ColAccent">#6366F1</Color>
+        <Color x:Key="ColAccentSoft">#818CF8</Color>
         <Color x:Key="ColTextPrimary">#E2E8F0</Color>
         <Color x:Key="ColTextSecondary">#94A3B8</Color>
-        <Color x:Key="ColTextMuted">#4B6280</Color>
-        <Color x:Key="ColOnline">#22C55E</Color>
-        <Color x:Key="ColAway">#EAB308</Color>
+        <Color x:Key="ColTextMuted">#64748B</Color>
+        <Color x:Key="ColOnline">#2DD4BF</Color>
+        <Color x:Key="ColAway">#F97316</Color>
         <Color x:Key="ColBusy">#EF4444</Color>
-        <Color x:Key="ColBorderSubtle">#FFFFFF0F</Color>
-        <Color x:Key="ColBorderGlow">#3B82F640</Color>
+        <Color x:Key="ColBorderSubtle">#10FFFFFF</Color>
+        <Color x:Key="ColBorderGlow">#506366F1</Color>
+        <Color x:Key="ColHoverOverlay">#0AFFFFFF</Color>
 
-        <!-- Brushes -->
-        <SolidColorBrush x:Key="BrBgDeep" Color="{StaticResource ColBgDeep}"/>
-        <SolidColorBrush x:Key="BrBgPrimary" Color="{StaticResource ColBgPrimary}"/>
-        <SolidColorBrush x:Key="BrBgSecondary" Color="{StaticResource ColBgSecondary}"/>
-        <SolidColorBrush x:Key="BrBgTertiary" Color="{StaticResource ColBgTertiary}"/>
-        <SolidColorBrush x:Key="BrAccent" Color="{StaticResource ColAccent}"/>
-        <SolidColorBrush x:Key="BrAccentSoft" Color="{StaticResource ColAccentSoft}"/>
-        <SolidColorBrush x:Key="BrTextPrimary" Color="{StaticResource ColTextPrimary}"/>
+        <!-- ═══ BRUSHES ═══ -->
+        <SolidColorBrush x:Key="BrBgDeep"        Color="{StaticResource ColBgDeep}"/>
+        <SolidColorBrush x:Key="BrBgSidebar"     Color="{StaticResource ColBgSidebar}"/>
+        <SolidColorBrush x:Key="BrBgPrimary"     Color="{StaticResource ColBgPrimary}"/>
+        <SolidColorBrush x:Key="BrBgSecondary"   Color="{StaticResource ColBgSecondary}"/>
+        <SolidColorBrush x:Key="BrBgTertiary"    Color="{StaticResource ColBgTertiary}"/>
+        <SolidColorBrush x:Key="BrAccent"        Color="{StaticResource ColAccent}"/>
+        <SolidColorBrush x:Key="BrAccentSoft"    Color="{StaticResource ColAccentSoft}"/>
+        <SolidColorBrush x:Key="BrTextPrimary"   Color="{StaticResource ColTextPrimary}"/>
         <SolidColorBrush x:Key="BrTextSecondary" Color="{StaticResource ColTextSecondary}"/>
-        <SolidColorBrush x:Key="BrTextMuted" Color="{StaticResource ColTextMuted}"/>
-        <SolidColorBrush x:Key="BrOnline" Color="{StaticResource ColOnline}"/>
-        <SolidColorBrush x:Key="BrAway" Color="{StaticResource ColAway}"/>
-        <SolidColorBrush x:Key="BrBusy" Color="{StaticResource ColBusy}"/>
-        <SolidColorBrush x:Key="BrBorderSubtle" Color="{StaticResource ColBorderSubtle}"/>
-        <SolidColorBrush x:Key="BrBorderGlow" Color="{StaticResource ColBorderGlow}"/>
+        <SolidColorBrush x:Key="BrTextMuted"     Color="{StaticResource ColTextMuted}"/>
+        <SolidColorBrush x:Key="BrOnline"        Color="{StaticResource ColOnline}"/>
+        <SolidColorBrush x:Key="BrAway"          Color="{StaticResource ColAway}"/>
+        <SolidColorBrush x:Key="BrBusy"          Color="{StaticResource ColBusy}"/>
+        <SolidColorBrush x:Key="BrBorderSubtle"  Color="{StaticResource ColBorderSubtle}"/>
+        <SolidColorBrush x:Key="BrBorderGlow"    Color="{StaticResource ColBorderGlow}"/>
+        <SolidColorBrush x:Key="BrHoverOverlay"  Color="{StaticResource ColHoverOverlay}"/>
 
         <LinearGradientBrush x:Key="BrAccentGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#2563EB" Offset="0"/>
-            <GradientStop Color="#3B82F6" Offset="1"/>
+            <GradientStop Color="#4F46E5" Offset="0"/>
+            <GradientStop Color="#6366F1" Offset="1"/>
         </LinearGradientBrush>
 
-        <!-- Dark thin scrollbar -->
+        <!-- ═══ OVERRIDE WPF SYSTEM COLORS — kills yellow/orange highlights ═══ -->
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"                 Color="#2D3255"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"              Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#242842"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="#94A3B8"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.MenuHighlightBrushKey}"              Color="#2D3255"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"                   Color="#242842"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"                Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}"                    Color="#1A1D2E"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}"                 Color="#E2E8F0"/>
+
+        <!-- ═══ GLOBAL TOGGLEBUTTON — eliminates WPF default orange hover ═══ -->
+        <Style TargetType="ToggleButton">
+            <Setter Property="Background"       Value="Transparent"/>
+            <Setter Property="BorderBrush"      Value="Transparent"/>
+            <Setter Property="BorderThickness"  Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrHoverOverlay}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrBorderSubtle}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ═══ GLOBAL BUTTON FALLBACK — eliminates WPF default yellow hover ═══ -->
+        <Style TargetType="Button">
+            <Setter Property="Background"       Value="Transparent"/>
+            <Setter Property="BorderBrush"      Value="Transparent"/>
+            <Setter Property="BorderThickness"  Value="0"/>
+            <Setter Property="Foreground"       Value="{StaticResource BrTextSecondary}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor"           Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.75"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ═══ THIN SCROLLBAR ═══ -->
         <Style TargetType="ScrollBar">
-            <Setter Property="Width" Value="4"/>
-            <Setter Property="MinWidth" Value="4"/>
+            <Setter Property="Width"      Value="4"/>
+            <Setter Property="MinWidth"   Value="4"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid>
-                            <Border Background="#FFFFFF08" CornerRadius="2"/>
+                            <Border Background="{StaticResource BrBorderSubtle}" CornerRadius="2"/>
                             <Track x:Name="PART_Track" IsDirectionReversed="True">
                                 <Track.Thumb>
                                     <Thumb>
                                         <Thumb.Template>
                                             <ControlTemplate TargetType="Thumb">
-                                                <Border Background="#3B82F680" CornerRadius="2"/>
+                                                <Border CornerRadius="2">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{StaticResource ColAccent}" Opacity="0.45"/>
+                                                    </Border.Background>
+                                                </Border>
                                             </ControlTemplate>
                                         </Thumb.Template>
                                     </Thumb>

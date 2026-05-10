@@ -2,17 +2,16 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Width="700"
-        Height="670"
+        Width="700" Height="670"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#0A0F1E"
+        Background="{StaticResource BrBgDeep}"
         FontFamily="Segoe UI">
 
     <Window.Resources>
 
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextSecondary}"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Margin" Value="0,0,0,4"/>
@@ -22,12 +21,12 @@
             <Setter Property="Margin" Value="0,0,0,14"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Padding" Value="14,0"/>
-            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
-            <Setter Property="Background" Value="#1E293B"/>
-            <Setter Property="CaretBrush" Value="#3B82F6"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
+            <Setter Property="CaretBrush" Value="{StaticResource BrAccent}"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -44,7 +43,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter Property="BorderBrush" Value="{StaticResource BrAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -57,12 +56,10 @@
             <Setter Property="Height" Value="40"/>
             <Setter Property="Padding" Value="14,0,10,0"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
-            <Setter Property="Background" Value="#1E293B"/>
-            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
@@ -71,41 +68,31 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="12"
-                                    ClipToBounds="True">
+                                    CornerRadius="12" ClipToBounds="True">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="36"/>
                                     </Grid.ColumnDefinitions>
-                                    <ContentPresenter Margin="14,0,0,0"
-                                                      VerticalAlignment="Center"
-                                                      HorizontalAlignment="Left"
+                                    <ContentPresenter Margin="14,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left"
                                                       Content="{TemplateBinding SelectionBoxItem}"/>
-                                    <ToggleButton Grid.Column="1"
-                                                  Focusable="False"
+                                    <ToggleButton Grid.Column="1" Focusable="False"
                                                   IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                                                  Background="Transparent"
-                                                  BorderThickness="0">
-                                        <Path Width="10" Height="6"
-                                              HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                  Background="Transparent" BorderThickness="0">
+                                        <Path Width="10" Height="6" HorizontalAlignment="Center" VerticalAlignment="Center"
                                               Data="M 0 0 L 5 6 L 10 0"
-                                              Stroke="#60A5FA" StrokeThickness="2"/>
+                                              Stroke="{StaticResource BrAccentSoft}" StrokeThickness="2"/>
                                     </ToggleButton>
                                 </Grid>
                             </Border>
-                            <Popup Name="PART_Popup"
-                                   Placement="Bottom"
+                            <Popup Name="PART_Popup" Placement="Bottom"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
-                                   AllowsTransparency="True"
-                                   Focusable="False"
-                                   PopupAnimation="Fade">
+                                   AllowsTransparency="True" Focusable="False" PopupAnimation="Fade">
                                 <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, ElementName=ComboBorder}"
-                                        Background="#1E293B"
-                                        BorderBrush="#FFFFFF12"
-                                        BorderThickness="1"
-                                        CornerRadius="12">
+                                        Background="{StaticResource BrBgSecondary}"
+                                        BorderBrush="{StaticResource BrBorderSubtle}"
+                                        BorderThickness="1" CornerRadius="12">
                                     <ScrollViewer>
                                         <StackPanel IsItemsHost="True"/>
                                     </ScrollViewer>
@@ -114,10 +101,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="{StaticResource BrAccent}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#60A5FA"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="{StaticResource BrAccentSoft}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -127,11 +114,11 @@
 
         <Style TargetType="ComboBoxItem">
             <Setter Property="Padding" Value="14,8"/>
-            <Setter Property="Foreground" Value="#F1F5F9"/>
-            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
             <Style.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="#3B82F630"/>
+                    <Setter Property="Background" Value="{StaticResource BrBorderGlow}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -147,8 +134,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="14"
-                                Padding="{TemplateBinding Padding}">
+                                CornerRadius="14" Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -163,11 +149,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="#0F172A"
-                CornerRadius="20"
-                Padding="24"
-                BorderBrush="#FFFFFF12"
-                BorderThickness="1">
+        <Border Background="{StaticResource BrBgSidebar}"
+                CornerRadius="20" Padding="24"
+                BorderBrush="{StaticResource BrBorderSubtle}" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="190"/>
@@ -177,21 +161,18 @@
                 <!-- Avatar column -->
                 <StackPanel Grid.Column="0" Margin="0,0,20,0" HorizontalAlignment="Center">
                     <Grid Width="160" Height="160" HorizontalAlignment="Center">
-                        <Ellipse Fill="#1E293B"
-                                 Stroke="#FFFFFF12"
-                                 StrokeThickness="1">
-                        </Ellipse>
+                        <Ellipse Fill="{StaticResource BrBgSecondary}"
+                                 Stroke="{StaticResource BrBorderSubtle}" StrokeThickness="1"/>
                         <Ellipse Margin="4">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{Binding EditableContact.ImagePath}" Stretch="UniformToFill"/>
                             </Ellipse.Fill>
                         </Ellipse>
                     </Grid>
-
                     <Button Content="{Binding ImageButtonText}"
                             Margin="0,16,0,0"
-                            Background="#1E293B"
-                            Foreground="#60A5FA"/>
+                            Background="{StaticResource BrBgSecondary}"
+                            Foreground="{StaticResource BrAccentSoft}"/>
                 </StackPanel>
 
                 <!-- Fields column -->
@@ -209,22 +190,18 @@
                         <TextBlock Text="Vzdevek"/>
                         <TextBox Text="{Binding EditableContact.Nickname, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
                     <StackPanel Grid.Row="1">
                         <TextBlock Text="Priimek"/>
                         <TextBox Text="{Binding EditableContact.LastName, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
                     <StackPanel Grid.Row="2">
                         <TextBlock Text="Email"/>
                         <TextBox Text="{Binding EditableContact.Email, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
                     <StackPanel Grid.Row="3">
                         <TextBlock Text="Telefonska številka"/>
                         <TextBox Text="{Binding EditableContact.Phone, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
-
                     <StackPanel Grid.Row="4">
                         <TextBlock Text="Status"/>
                         <ComboBox Style="{StaticResource RoundedComboBoxStyle}"
@@ -234,7 +211,6 @@
                             <sys:String>Busy</sys:String>
                         </ComboBox>
                     </StackPanel>
-
                     <StackPanel Grid.Row="5">
                         <TextBlock Text="Zadnja aktivnost"/>
                         <TextBox Text="{Binding EditableContact.LastActive, UpdateSourceTrigger=PropertyChanged}"/>
@@ -243,19 +219,14 @@
             </Grid>
         </Border>
 
-        <!-- Buttons -->
-        <StackPanel Grid.Row="1"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,16,0,0">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,16,0,0">
             <Button Content="Prekliči"
-                    Background="#1E293B"
-                    Foreground="#94A3B8"
+                    Background="{StaticResource BrBgSecondary}"
+                    Foreground="{StaticResource BrTextSecondary}"
                     Click="Cancel_Click"/>
             <Button Content="Potrdi"
                     Background="{StaticResource BrAccentGradient}"
-                    Foreground="White"
-                    Margin="0"
+                    Foreground="White" Margin="0"
                     Click="Confirm_Click"/>
         </StackPanel>
     </Grid>
