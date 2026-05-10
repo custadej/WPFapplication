@@ -30,6 +30,11 @@ namespace TakojsnjeSporocanje
             DataContext = this;
         }
 
+        private void AvatarGrid_Click(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LoadImage_Click(sender, e);
+        }
+
         private void LoadImage_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog
@@ -60,12 +65,6 @@ namespace TakojsnjeSporocanje
             if (string.IsNullOrWhiteSpace(EditableContact.Nickname))
             {
                 ModernDialogWindow.ShowInfo(this, "Manjka vzdevek", "Vnesi vzdevek stika, preden nadaljuješ.");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(EditableContact.Email))
-            {
-                ModernDialogWindow.ShowInfo(this, "Manjka e-pošta", "Vnesi e-pošto stika, preden nadaljuješ.");
                 return;
             }
 

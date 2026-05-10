@@ -883,6 +883,7 @@
                                                     <TextBlock Text="{Binding Text}"
                                                                TextWrapping="Wrap" FontSize="13"
                                                                LineHeight="20"
+                                                               FontFamily="Segoe UI Emoji"
                                                                Foreground="{StaticResource BrTextPrimary}"/>
                                                 </StackPanel>
                                             </Border>
