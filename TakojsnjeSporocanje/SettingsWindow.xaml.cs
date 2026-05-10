@@ -24,7 +24,9 @@ namespace TakojsnjeSporocanje
                 ImagePath = userProfile.ImagePath,
                 About = userProfile.About,
                 City = userProfile.City,
-                Country = userProfile.Country
+                Country = userProfile.Country,
+                AutoSaveEnabled = userProfile.AutoSaveEnabled,
+                AutoSaveIntervalMinutes = userProfile.AutoSaveIntervalMinutes
             };
 
             DataContext = this;

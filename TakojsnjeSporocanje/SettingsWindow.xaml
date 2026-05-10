@@ -180,13 +180,22 @@
                             <TextBlock Text="Samodejno shranjevanje"
                                        FontSize="22"
                                        FontWeight="SemiBold"/>
-                            <CheckBox Content="Omogo&#269;i samodejno shranjevanje"
+                            <CheckBox x:Name="AutoSaveCheckBox"
+                                      Content="Omogo&#269;i samodejno shranjevanje"
+                                      IsChecked="{Binding EditableProfile.AutoSaveEnabled, Mode=TwoWay}"
                                       Margin="0,20,0,14"
                                       FontSize="15"/>
                             <TextBlock Text="&#268;asovni interval v minutah"
-                                       FontWeight="SemiBold"/>
+                                       FontWeight="SemiBold"
+                                       IsEnabled="{Binding IsChecked, ElementName=AutoSaveCheckBox}"/>
                             <TextBox Width="140"
-                                     Text="5"/>
+                                     HorizontalAlignment="Left"
+                                     IsEnabled="{Binding IsChecked, ElementName=AutoSaveCheckBox}"
+                                     Text="{Binding EditableProfile.AutoSaveIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBlock Margin="0,20,0,0"
+                                       Foreground="#FF475569"
+                                       TextWrapping="Wrap"
+                                       Text="Podatki se samodejno shranijo v datoteko chat-data.xml v mapi aplikacije."/>
                         </StackPanel>
                     </Border>
                 </TabItem>

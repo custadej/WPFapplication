@@ -14,6 +14,8 @@ namespace TakojsnjeSporocanje
         private string about;
         private string city;
         private string country;
+        private bool autoSaveEnabled = true;
+        private int autoSaveIntervalMinutes = 5;
 
         public string Nickname
         {
@@ -67,6 +69,18 @@ namespace TakojsnjeSporocanje
         {
             get => country;
             set { country = value; OnPropertyChanged(); }
+        }
+
+        public bool AutoSaveEnabled
+        {
+            get => autoSaveEnabled;
+            set { autoSaveEnabled = value; OnPropertyChanged(); }
+        }
+
+        public int AutoSaveIntervalMinutes
+        {
+            get => autoSaveIntervalMinutes;
+            set { autoSaveIntervalMinutes = value; OnPropertyChanged(); }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

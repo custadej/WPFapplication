@@ -14,3 +14,7 @@ Release/
 # Rider / ReSharper
 _ReSharper*
 *.DotSettings.user
+
+# Notes
+CLAUDE.md
+.claude/
