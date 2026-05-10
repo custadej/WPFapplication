@@ -17,6 +17,9 @@ namespace TakojsnjeSporocanje
     {
         private const string DefaultDataFileName = "chat-data.xml";
 
+        private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer();
+        private ChatNetworkService networkService;
+
         public ChatData AppData { get; set; }
 
         public ObservableCollection<ChatMessage> CurrentConversationMessages { get; } = new ObservableCollection<ChatMessage>();
@@ -59,6 +62,28 @@ namespace TakojsnjeSporocanje
 
         public string ContactCountText => GetContactCountText(AppData?.Contacts.Count ?? 0);
 
+        public string AutoSaveStatusText
+        {
+            get
+            {
+                if (AppData?.CurrentUser == null || !AppData.CurrentUser.AutoSaveEnabled)
+                {
+                    return "Samodejno shranjevanje: izklopljeno";
+                }
+
+                return $"Samodejno shranjevanje: vsakih {AppData.CurrentUser.AutoSaveIntervalMinutes} min";
+            }
+        }
+
+        private bool isNetworkConnected;
+        public bool IsNetworkConnected
+        {
+            get => isNetworkConnected;
+            set { isNetworkConnected = value; OnPropertyChanged(); OnPropertyChanged(nameof(NetworkStatusText)); }
+        }
+
+        public string NetworkStatusText => isNetworkConnected ? "Omrežje: Povezano" : "Omrežje: Ni povezave";
+
         public string ComposerMessageText
         {
             get => composerMessageText;
@@ -81,6 +106,35 @@ namespace TakojsnjeSporocanje
             SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
             UpdateContactMenuState();
             OnPropertyChanged(nameof(ContactCountText));
+
+            autoSaveTimer.Tick += AutoSaveTimer_Tick;
+            ApplyAutoSaveSettings();
+        }
+
+        private void AutoSaveTimer_Tick(object sender, EventArgs e)
+        {
+            SaveDefaultDataSilently();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            autoSaveTimer.Stop();
+            networkService?.Dispose();
+            base.OnClosed(e);
+        }
+
+        private void ApplyAutoSaveSettings()
+        {
+            autoSaveTimer.Stop();
+
+            if (AppData?.CurrentUser == null || !AppData.CurrentUser.AutoSaveEnabled)
+            {
+                return;
+            }
+
+            int minutes = Math.Max(1, AppData.CurrentUser.AutoSaveIntervalMinutes);
+            autoSaveTimer.Interval = TimeSpan.FromMinutes(minutes);
+            autoSaveTimer.Start();
         }
 
         private void MenuImport_Click(object sender, RoutedEventArgs e)
@@ -243,7 +297,69 @@ namespace TakojsnjeSporocanje
             AppData.CurrentUser.About = dialog.EditableProfile.About;
             AppData.CurrentUser.City = dialog.EditableProfile.City;
             AppData.CurrentUser.Country = dialog.EditableProfile.Country;
+            AppData.CurrentUser.AutoSaveEnabled = dialog.EditableProfile.AutoSaveEnabled;
+            AppData.CurrentUser.AutoSaveIntervalMinutes = dialog.EditableProfile.AutoSaveIntervalMinutes;
+            ApplyAutoSaveSettings();
+            OnPropertyChanged(nameof(AutoSaveStatusText));
             RefreshConversationMessages();
+        }
+
+        private void MenuNetwork_Click(object sender, RoutedEventArgs e)
+        {
+            NetworkWindow dialog = new NetworkWindow(networkService) { Owner = this };
+
+            if (dialog.ShowDialog() != true)
+            {
+                return;
+            }
+
+            networkService?.Dispose();
+            networkService = dialog.NetworkService;
+
+            if (networkService != null)
+            {
+                networkService.MessageReceived += Network_MessageReceived;
+                networkService.Disconnected += Network_Disconnected;
+                NetworkConnectMenuItem.IsEnabled = false;
+                NetworkDisconnectMenuItem.IsEnabled = true;
+                IsNetworkConnected = true;
+                ModernDialogWindow.ShowInfo(this, "Omrežje", "Omrežna povezava je vzpostavljena. Sporočila bodo posredovana sogovorniku.");
+            }
+        }
+
+        private void MenuNetworkDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+            networkService?.Dispose();
+            networkService = null;
+            NetworkConnectMenuItem.IsEnabled = true;
+            NetworkDisconnectMenuItem.IsEnabled = false;
+            IsNetworkConnected = false;
+            ModernDialogWindow.ShowInfo(this, "Omrežje", "Omrežna povezava je prekinjena.");
+        }
+
+        private void Network_MessageReceived(string message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (SelectedContact == null)
+                {
+                    return;
+                }
+
+                SelectedContact.Conversation += SelectedContact.Nickname + ": " + message + "\n";
+            });
+        }
+
+        private void Network_Disconnected(string reason)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                networkService = null;
+                NetworkConnectMenuItem.IsEnabled = true;
+                NetworkDisconnectMenuItem.IsEnabled = false;
+                IsNetworkConnected = false;
+                ModernDialogWindow.ShowInfo(this, "Omrežje prekinjeno", reason);
+            });
         }
 
         private void MessageComposer_SendMessageRequested(object sender, RoutedEventArgs e)
@@ -256,11 +372,18 @@ namespace TakojsnjeSporocanje
             string message = ComposerMessageText.Trim();
             SelectedContact.Conversation += AppData.CurrentUser.Nickname + ": " + message + "\n";
 
-            string response = message.ToLower().Contains("kako")
-                ? "Super sem :)"
-                : "OK :)";
+            if (networkService?.IsConnected == true)
+            {
+                networkService.SendMessage(message);
+            }
+            else
+            {
+                string response = message.ToLower().Contains("kako")
+                    ? "Super sem :)"
+                    : "OK :)";
 
-            SelectedContact.Conversation += SelectedContact.Nickname + ": " + response + "\n";
+                SelectedContact.Conversation += SelectedContact.Nickname + ": " + response + "\n";
+            }
 
             ComposerMessageText = string.Empty;
             MessageComposer.ClearMessage();
@@ -488,6 +611,8 @@ namespace TakojsnjeSporocanje
             SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
 
             isUpdatingData = false;
+
+            ApplyAutoSaveSettings();
         }
 
         private void AttachDataHandlers(ChatData data)

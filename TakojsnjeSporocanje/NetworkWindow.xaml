@@ -1,0 +1,165 @@
+<Window x:Class="TakojsnjeSporocanje.NetworkWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Omrežna povezava"
+        Width="480"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        Background="#FFF4F7FB"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,6,0,12"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderBrush" Value="#FFD5DCEA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#FF0F172A"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="16">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="16"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="Foreground" Value="#FF0F172A"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="White"
+                CornerRadius="24"
+                Padding="24"
+                BorderBrush="#FFE2E8F0"
+                BorderThickness="1">
+            <StackPanel>
+                <TextBlock Text="Omrežna povezava"
+                           FontSize="22"
+                           FontWeight="SemiBold"
+                           Foreground="#FF0F172A"/>
+                <TextBlock Text="Poveži dve instanci aplikacije prek omrežja TCP."
+                           Margin="0,6,0,20"
+                           Foreground="#FF475569"
+                           TextWrapping="Wrap"/>
+
+                <!-- Mode selection -->
+                <TextBlock Text="Način delovanja"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                    <RadioButton x:Name="ServerRadio"
+                                 Content="Strežnik (gostuj)"
+                                 IsChecked="True"
+                                 Checked="ModeChanged"/>
+                    <RadioButton x:Name="ClientRadio"
+                                 Content="Odjemalec (poveži)"
+                                 Checked="ModeChanged"/>
+                </StackPanel>
+
+                <!-- Server panel -->
+                <StackPanel x:Name="ServerPanel">
+                    <TextBlock Text="Tvoj IP naslov"
+                               FontWeight="SemiBold"/>
+                    <TextBox x:Name="LocalIPBox"
+                             IsReadOnly="True"
+                             Background="#FFF8FAFC"
+                             Foreground="#FF475569"/>
+
+                    <TextBlock Text="Vrata (port)"
+                               FontWeight="SemiBold"/>
+                    <TextBox x:Name="ServerPortBox"
+                             Text="5000"/>
+
+                    <TextBlock Foreground="#FF475569"
+                               TextWrapping="Wrap"
+                               Margin="0,4,0,0"
+                               Text="Zaženi strežnik in posreduj IP ter vrata drugi osebi, ki se bo priključila."/>
+                </StackPanel>
+
+                <!-- Client panel -->
+                <StackPanel x:Name="ClientPanel" Visibility="Collapsed">
+                    <TextBlock Text="IP naslov strežnika"
+                               FontWeight="SemiBold"/>
+                    <TextBox x:Name="ServerIPBox"
+                             Text="127.0.0.1"/>
+
+                    <TextBlock Text="Vrata (port)"
+                               FontWeight="SemiBold"/>
+                    <TextBox x:Name="ClientPortBox"
+                             Text="5000"/>
+                </StackPanel>
+
+                <!-- Status -->
+                <Border x:Name="StatusBorder"
+                        Background="#FFF0FDF4"
+                        CornerRadius="12"
+                        Padding="14,10"
+                        Margin="0,16,0,0"
+                        Visibility="Collapsed">
+                    <TextBlock x:Name="StatusText"
+                               Foreground="#FF166534"
+                               TextWrapping="Wrap"
+                               FontSize="13"/>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,18,0,0">
+            <Button x:Name="CancelButton"
+                    Content="Zapri"
+                    Background="#FFE5E7EB"
+                    Foreground="#FF0F172A"
+                    Click="Cancel_Click"/>
+            <Button x:Name="ConnectButton"
+                    Content="Poveži"
+                    Background="#FF2563EB"
+                    Foreground="White"
+                    Click="Connect_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
