@@ -47,7 +47,32 @@ namespace TakojsnjeSporocanje
         public string Conversation
         {
             get => conversation;
-            set { conversation = value; OnPropertyChanged(); }
+            set
+            {
+                conversation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(LastMessagePreview));
+            }
+        }
+
+        public string LastMessagePreview
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(conversation))
+                    return string.Empty;
+
+                string[] lines = conversation.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                if (lines.Length == 0)
+                    return string.Empty;
+
+                string lastLine = lines[lines.Length - 1];
+                int separatorIndex = lastLine.IndexOf(':');
+                if (separatorIndex >= 0 && separatorIndex < lastLine.Length - 1)
+                    return lastLine.Substring(separatorIndex + 1).Trim();
+
+                return lastLine.Trim();
+            }
         }
 
         public string ImagePath

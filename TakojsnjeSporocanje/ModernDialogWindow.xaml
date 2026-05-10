@@ -4,23 +4,25 @@
         Title="Obvestilo"
         Width="460"
         SizeToContent="Height"
-        MinHeight="240"
+        MinHeight="220"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#FFF4F7FB"
+        Background="#0A0F1E"
         FontFamily="Segoe UI">
 
     <Window.Resources>
         <Style TargetType="Button">
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="16"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -34,43 +36,43 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="White"
-                CornerRadius="24"
+        <Border Background="#0F172A"
+                CornerRadius="16"
                 Padding="22"
-                BorderBrush="#FFE2E8F0"
+                BorderBrush="#FFFFFF12"
                 BorderThickness="1">
             <StackPanel>
                 <TextBlock Text="{Binding DialogTitle}"
-                           FontSize="24"
+                           FontSize="20"
                            FontWeight="SemiBold"
-                           Foreground="#FF0F172A"/>
+                           Foreground="#F1F5F9"
+                           Margin="0,0,0,12"/>
                 <TextBlock Text="{Binding DialogMessage}"
-                           Margin="0,16,0,0"
-                           FontSize="15"
+                           FontSize="14"
                            TextWrapping="Wrap"
-                           Foreground="#FF334155"/>
+                           Foreground="#94A3B8"/>
             </StackPanel>
         </Border>
 
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Margin="0,18,0,0">
+                    Margin="0,16,0,0">
             <Button x:Name="CancelButton"
                     Content="Prekliči"
                     Width="110"
                     Height="42"
-                    Margin="0,0,10,0"
                     Padding="0"
-                    Background="#FFE5E7EB"
-                    Foreground="#FF0F172A"
+                    Margin="0,0,10,0"
+                    Background="#1E293B"
+                    Foreground="#94A3B8"
                     Click="Cancel_Click"/>
             <Button x:Name="ConfirmButton"
                     Content="V redu"
                     Width="120"
                     Height="42"
                     Padding="0"
-                    Background="#FF2563EB"
+                    Background="{StaticResource BrAccentGradient}"
                     Foreground="White"
                     Click="Confirm_Click"/>
         </StackPanel>

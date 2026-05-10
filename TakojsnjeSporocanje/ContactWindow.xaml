@@ -6,19 +6,28 @@
         Height="670"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#FFF4F7FB"
+        Background="#0A0F1E"
         FontFamily="Segoe UI">
 
     <Window.Resources>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,6,0,12"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="BorderBrush" Value="#FFD5DCEA"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF0F172A"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="CaretBrush" Value="#3B82F6"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -28,24 +37,29 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="16">
+                                CornerRadius="12">
                             <ScrollViewer x:Name="PART_ContentHost"
                                           Margin="{TemplateBinding Padding}"
                                           VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="BorderBrush" Value="#3B82F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
         <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Margin" Value="0,6,0,12"/>
+            <Setter Property="Margin" Value="0,0,0,14"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Padding" Value="12,0,10,0"/>
+            <Setter Property="Padding" Value="14,0,10,0"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF0F172A"/>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#FFD5DCEA"/>
+            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -57,14 +71,14 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="18"
+                                    CornerRadius="12"
                                     ClipToBounds="True">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="36"/>
                                     </Grid.ColumnDefinitions>
-                                    <ContentPresenter Margin="12,0,0,0"
+                                    <ContentPresenter Margin="14,0,0,0"
                                                       VerticalAlignment="Center"
                                                       HorizontalAlignment="Left"
                                                       Content="{TemplateBinding SelectionBoxItem}"/>
@@ -73,13 +87,10 @@
                                                   IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                                   Background="Transparent"
                                                   BorderThickness="0">
-                                        <Path Width="10"
-                                              Height="6"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"
+                                        <Path Width="10" Height="6"
+                                              HorizontalAlignment="Center" VerticalAlignment="Center"
                                               Data="M 0 0 L 5 6 L 10 0"
-                                              Stroke="#2455D6"
-                                              StrokeThickness="2"/>
+                                              Stroke="#60A5FA" StrokeThickness="2"/>
                                     </ToggleButton>
                                 </Grid>
                             </Border>
@@ -89,12 +100,12 @@
                                    AllowsTransparency="True"
                                    Focusable="False"
                                    PopupAnimation="Fade">
-                                <Border Margin="0,8,0,0"
+                                <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, ElementName=ComboBorder}"
-                                        Background="White"
-                                        BorderBrush="#D6DCE7"
+                                        Background="#1E293B"
+                                        BorderBrush="#FFFFFF12"
                                         BorderThickness="1"
-                                        CornerRadius="16">
+                                        CornerRadius="12">
                                     <ScrollViewer>
                                         <StackPanel IsItemsHost="True"/>
                                     </ScrollViewer>
@@ -103,10 +114,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#93C5FD"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#3B82F6"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#2563EB"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#60A5FA"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -114,19 +125,31 @@
             </Setter>
         </Style>
 
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="#3B82F630"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style TargetType="Button">
             <Setter Property="Margin" Value="0,0,10,0"/>
-            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Padding" Value="16,10"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="16"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -140,10 +163,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="White"
-                CornerRadius="28"
-                Padding="22"
-                BorderBrush="#FFE2E8F0"
+        <Border Background="#0F172A"
+                CornerRadius="20"
+                Padding="24"
+                BorderBrush="#FFFFFF12"
                 BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -151,11 +174,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                <!-- Avatar column -->
+                <StackPanel Grid.Column="0" Margin="0,0,20,0" HorizontalAlignment="Center">
                     <Grid Width="160" Height="160" HorizontalAlignment="Center">
-                        <Ellipse Fill="#FFEFF4FB"
-                                 Stroke="#FFD5DCEA"
-                                 StrokeThickness="1"/>
+                        <Ellipse Fill="#1E293B"
+                                 Stroke="#FFFFFF12"
+                                 StrokeThickness="1">
+                        </Ellipse>
                         <Ellipse Margin="4">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="{Binding EditableContact.ImagePath}" Stretch="UniformToFill"/>
@@ -164,13 +189,13 @@
                     </Grid>
 
                     <Button Content="{Binding ImageButtonText}"
-                            Margin="0,18,0,0"
-                            Background="#FFE8EEF9"
-                            Foreground="#FF1D4ED8"
-                            Click="LoadImage_Click"/>
+                            Margin="0,16,0,0"
+                            Background="#1E293B"
+                            Foreground="#60A5FA"/>
                 </StackPanel>
 
-                <Grid Grid.Column="1" Margin="0,0,6,0">
+                <!-- Fields column -->
+                <Grid Grid.Column="1" Margin="0,0,4,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -180,45 +205,57 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Text="Vzdevek" FontWeight="SemiBold"/>
-                    <TextBox Margin="0,30,0,12" Text="{Binding EditableContact.Nickname, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Grid.Row="0">
+                        <TextBlock Text="Vzdevek"/>
+                        <TextBox Text="{Binding EditableContact.Nickname, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="1" Text="Priimek" FontWeight="SemiBold"/>
-                    <TextBox Grid.Row="1" Margin="0,30,0,12" Text="{Binding EditableContact.LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Grid.Row="1">
+                        <TextBlock Text="Priimek"/>
+                        <TextBox Text="{Binding EditableContact.LastName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="2" Text="Email" FontWeight="SemiBold"/>
-                    <TextBox Grid.Row="2" Margin="0,30,0,12" Text="{Binding EditableContact.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Grid.Row="2">
+                        <TextBlock Text="Email"/>
+                        <TextBox Text="{Binding EditableContact.Email, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="3" Text="Telefonska &#353;tevilka" FontWeight="SemiBold"/>
-                    <TextBox Grid.Row="3" Margin="0,30,0,12" Text="{Binding EditableContact.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Grid.Row="3">
+                        <TextBlock Text="Telefonska številka"/>
+                        <TextBox Text="{Binding EditableContact.Phone, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="4" Text="Status" FontWeight="SemiBold"/>
-                    <ComboBox Grid.Row="4"
-                              Margin="0,30,0,12"
-                              Style="{StaticResource RoundedComboBoxStyle}"
-                              SelectedItem="{Binding EditableContact.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <sys:String>Online</sys:String>
-                        <sys:String>Away</sys:String>
-                        <sys:String>Busy</sys:String>
-                    </ComboBox>
+                    <StackPanel Grid.Row="4">
+                        <TextBlock Text="Status"/>
+                        <ComboBox Style="{StaticResource RoundedComboBoxStyle}"
+                                  SelectedItem="{Binding EditableContact.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <sys:String>Online</sys:String>
+                            <sys:String>Away</sys:String>
+                            <sys:String>Busy</sys:String>
+                        </ComboBox>
+                    </StackPanel>
 
-                    <TextBlock Grid.Row="5" Text="Zadnja aktivnost" FontWeight="SemiBold"/>
-                    <TextBox Grid.Row="5" Margin="0,30,0,12" Text="{Binding EditableContact.LastActive, UpdateSourceTrigger=PropertyChanged}"/>
+                    <StackPanel Grid.Row="5">
+                        <TextBlock Text="Zadnja aktivnost"/>
+                        <TextBox Text="{Binding EditableContact.LastActive, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
                 </Grid>
             </Grid>
         </Border>
 
+        <!-- Buttons -->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Margin="0,18,0,0">
-            <Button Content="Prekli&#269;i"
-                    Background="#FFE5E7EB"
-                    Foreground="#FF0F172A"
+                    Margin="0,16,0,0">
+            <Button Content="Prekliči"
+                    Background="#1E293B"
+                    Foreground="#94A3B8"
                     Click="Cancel_Click"/>
             <Button Content="Potrdi"
-                    Background="#FF2563EB"
+                    Background="{StaticResource BrAccentGradient}"
                     Foreground="White"
+                    Margin="0"
                     Click="Confirm_Click"/>
         </StackPanel>
     </Grid>

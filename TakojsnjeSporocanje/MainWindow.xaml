@@ -3,45 +3,55 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:TakojsnjeSporocanje"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Title="Takoj&#353;nje sporo&#269;anje"
+        Title="Takojšnje sporočanje"
         Height="720"
         Width="1220"
         MinHeight="640"
         MinWidth="1000"
-        Background="#FFF1F5FB"
+        Background="{StaticResource BrBgDeep}"
         FontFamily="Segoe UI">
 
     <Window.Resources>
+
+        <!-- Selected contact accent border -->
+        <LinearGradientBrush x:Key="ContactSelectedBorderBrush" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#2563EB" Offset="0"/>
+            <GradientStop Color="#3B82F6" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- Menu styles -->
         <Style TargetType="Menu">
-            <Setter Property="Background" Value="#FF0F172A"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Background" Value="{StaticResource BrBgDeep}"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Padding" Value="8,0"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="40"/>
         </Style>
 
         <Style TargetType="MenuItem">
             <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
             <Setter Property="Background" Value="Transparent"/>
         </Style>
 
         <Style x:Key="TopMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
             <Style.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="#FF1E293B"/>
+                    <Setter Property="Background" Value="#3B82F620"/>
                 </Trigger>
                 <Trigger Property="IsSubmenuOpen" Value="True">
-                    <Setter Property="Background" Value="#FF1D4ED8"/>
+                    <Setter Property="Background" Value="#3B82F630"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="SubMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-            <Setter Property="Foreground" Value="#FF0F172A"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
             <Setter Property="Padding" Value="10,8"/>
             <Style.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="#FFEAF2FF"/>
+                    <Setter Property="Background" Value="#3B82F630"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -53,27 +63,17 @@
             <Setter Property="LineHeight" Value="20"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Foreground" Value="#FF0F172A"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextSecondary}"/>
         </Style>
 
-        <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,6,0,12"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Padding" Value="12,6"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Background" Value="#FFF8FAFC"/>
-            <Setter Property="BorderBrush" Value="#FFD6DCE7"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-
+        <!-- RoundedComboBox — dark themed -->
         <Style x:Key="RoundedComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Height" Value="34"/>
             <Setter Property="Padding" Value="10,0,8,0"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#FF223A5F"/>
-            <Setter Property="BorderBrush" Value="#FF37557F"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="{StaticResource BrBgTertiary}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -102,12 +102,11 @@
                                                   Background="Transparent"
                                                   BorderThickness="0"
                                                   Padding="0">
-                                        <Path Width="10"
-                                              Height="6"
+                                        <Path Width="10" Height="6"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
                                               Data="M 0 0 L 5 6 L 10 0"
-                                              Stroke="#BFDBFE"
+                                              Stroke="#60A5FA"
                                               StrokeThickness="2"/>
                                     </ToggleButton>
                                 </Grid>
@@ -118,12 +117,12 @@
                                    AllowsTransparency="True"
                                    Focusable="False"
                                    PopupAnimation="Fade">
-                                <Border Margin="0,8,0,0"
+                                <Border Margin="0,4,0,0"
                                         MinWidth="{Binding ActualWidth, ElementName=ComboBorder}"
-                                        Background="#FF223A5F"
-                                        BorderBrush="#FF37557F"
+                                        Background="#1A1A2E"
+                                        BorderBrush="#FFFFFF12"
                                         BorderThickness="1"
-                                        CornerRadius="16">
+                                        CornerRadius="14">
                                     <ScrollViewer>
                                         <StackPanel IsItemsHost="True"/>
                                     </ScrollViewer>
@@ -132,10 +131,10 @@
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#60A5FA"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#3B82F6"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#93C5FD"/>
+                                <Setter TargetName="ComboBorder" Property="BorderBrush" Value="#60A5FA"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -145,63 +144,68 @@
 
         <Style TargetType="ComboBoxItem">
             <Setter Property="Padding" Value="10,8"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#FF223A5F"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="Background" Value="#1A1A2E"/>
             <Style.Triggers>
                 <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="#FF3053A5"/>
+                    <Setter Property="Background" Value="#3B82F630"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#FF3053A5"/>
+                    <Setter Property="Background" Value="#3B82F640"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FF2F6BFF"/>
+        <!-- Accent gradient button -->
+        <Style x:Key="AccentButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource BrAccentGradient}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Padding" Value="14,8"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="16"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <!-- Ghost / secondary button -->
         <Style x:Key="GhostButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FFEAF1FF"/>
-            <Setter Property="Foreground" Value="#FF2455D6"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Background" Value="#FFFFFF0A"/>
+            <Setter Property="Foreground" Value="{StaticResource BrTextSecondary}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
+            <Setter Property="Padding" Value="14,8"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="16"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <!-- Chat context menu dark style -->
         <Style x:Key="ChatContextMenuStyle" TargetType="ContextMenu">
-            <Setter Property="Background" Value="#FFFDF2F2"/>
-            <Setter Property="BorderBrush" Value="#FFF7CACA"/>
+            <Setter Property="Background" Value="#1A1A2E"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="8"/>
             <Setter Property="Template">
@@ -210,7 +214,7 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="16"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
                             <StackPanel IsItemsHost="True"/>
                         </Border>
@@ -219,62 +223,60 @@
             </Setter>
         </Style>
 
-        <Style x:Key="DeleteMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource SubMenuItemStyle}">
-            <Setter Property="Foreground" Value="#FFDC2626"/>
+        <Style x:Key="DeleteMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Foreground" Value="#EF4444"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Padding" Value="12,8"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="MenuItem">
                         <Border x:Name="MenuItemBorder"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="12"
+                                CornerRadius="10"
                                 Padding="{TemplateBinding Padding}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <ContentPresenter ContentSource="Icon"
-                                                  VerticalAlignment="Center"
-                                                  Margin="0,0,10,0"/>
-                                <ContentPresenter Grid.Column="1"
-                                                  ContentSource="Header"
-                                                  VerticalAlignment="Center"/>
+                                <ContentPresenter ContentSource="Icon" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header" VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="True">
-                                <Setter TargetName="MenuItemBorder" Property="Background" Value="#FFFEE2E2"/>
+                                <Setter TargetName="MenuItemBorder" Property="Background" Value="#EF444420"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- Compact view visibility converters via DataTrigger — we'll handle via bindings -->
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+
     </Window.Resources>
 
     <DockPanel>
+
+        <!-- Menu bar -->
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Datoteka" Style="{StaticResource TopMenuItemStyle}">
                 <MenuItem Header="Uvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuImport_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x2193;"
-                                   Style="{StaticResource MenuIconTextStyle}"/>
+                        <TextBlock Text="&#x2193;" Style="{StaticResource MenuIconTextStyle}"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Header="Izvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuExport_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x2191;"
-                                   Style="{StaticResource MenuIconTextStyle}"/>
+                        <TextBlock Text="&#x2191;" Style="{StaticResource MenuIconTextStyle}"/>
                     </MenuItem.Icon>
                 </MenuItem>
-                <Separator/>
+                <Separator Background="#FFFFFF12"/>
                 <MenuItem Header="Izhod" Style="{StaticResource SubMenuItemStyle}" Click="MenuExit_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x21AA;"
-                                   Style="{StaticResource MenuIconTextStyle}"
-                                   Foreground="#FFDC2626"/>
+                        <TextBlock Text="&#x21AA;" Style="{StaticResource MenuIconTextStyle}" Foreground="#EF4444"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -282,34 +284,28 @@
             <MenuItem Header="Stiki" Style="{StaticResource TopMenuItemStyle}">
                 <MenuItem Header="Dodaj..." Style="{StaticResource SubMenuItemStyle}" Click="MenuAddContact_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="+"
-                                   Style="{StaticResource MenuIconTextStyle}"
-                                   FontWeight="Bold"/>
+                        <TextBlock Text="+" Style="{StaticResource MenuIconTextStyle}" FontWeight="Bold"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Name="RemoveContactMenuItem" Header="Odstrani" Style="{StaticResource SubMenuItemStyle}" Click="MenuRemoveContact_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="-"
-                                   Style="{StaticResource MenuIconTextStyle}"
-                                   FontWeight="Bold"/>
+                        <TextBlock Text="-" Style="{StaticResource MenuIconTextStyle}" FontWeight="Bold"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem Name="EditContactMenuItem" Header="Uredi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuEditContact_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x270E;"
-                                   Style="{StaticResource MenuIconTextStyle}"/>
+                        <TextBlock Text="&#x270E;" Style="{StaticResource MenuIconTextStyle}"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
 
-            <MenuItem Header="Omre&#382;je" Style="{StaticResource TopMenuItemStyle}">
+            <MenuItem Header="Omrežje" Style="{StaticResource TopMenuItemStyle}">
                 <MenuItem x:Name="NetworkConnectMenuItem"
                           Header="Poveži se..."
                           Style="{StaticResource SubMenuItemStyle}"
                           Click="MenuNetwork_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x2194;"
-                                   Style="{StaticResource MenuIconTextStyle}"/>
+                        <TextBlock Text="&#x2194;" Style="{StaticResource MenuIconTextStyle}"/>
                     </MenuItem.Icon>
                 </MenuItem>
                 <MenuItem x:Name="NetworkDisconnectMenuItem"
@@ -318,9 +314,7 @@
                           IsEnabled="False"
                           Click="MenuNetworkDisconnect_Click">
                     <MenuItem.Icon>
-                        <TextBlock Text="&#x2716;"
-                                   Style="{StaticResource MenuIconTextStyle}"
-                                   Foreground="#FFDC2626"/>
+                        <TextBlock Text="&#x2716;" Style="{StaticResource MenuIconTextStyle}" Foreground="#EF4444"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
@@ -328,25 +322,32 @@
             <MenuItem Header="Orodja" Style="{StaticResource TopMenuItemStyle}">
                 <MenuItem Header="Nastavitve" Style="{StaticResource SubMenuItemStyle}" Click="MenuSettings_Click">
                     <MenuItem.Icon>
-                        <Viewbox Width="16"
-                                 Height="16"
-                                 Stretch="Uniform">
-                            <Canvas Width="16" Height="16">
-                                <Path Width="16"
-                                      Height="16"
-                                      Fill="#FF0F172A"
-                                      Data="M8,1.8 L9.1,1.8 L9.5,3.1 C10,3.3 10.5,3.5 10.9,3.8 L12.2,3.3 L13,4.1 L12.5,5.4 C12.8,5.8 13,6.3 13.2,6.8 L14.5,7.2 L14.5,8.3 L13.2,8.7 C13,9.2 12.8,9.7 12.5,10.1 L13,11.4 L12.2,12.2 L10.9,11.7 C10.5,12 10,12.2 9.5,12.4 L9.1,13.7 L8,13.7 L7.6,12.4 C7.1,12.2 6.6,12 6.2,11.7 L4.9,12.2 L4.1,11.4 L4.6,10.1 C4.3,9.7 4.1,9.2 3.9,8.7 L2.6,8.3 L2.6,7.2 L3.9,6.8 C4.1,6.3 4.3,5.8 4.6,5.4 L4.1,4.1 L4.9,3.3 L6.2,3.8 C6.6,3.5 7.1,3.3 7.6,3.1 Z M8.55,5.1 C9.88,5.1 10.95,6.17 10.95,7.5 C10.95,8.83 9.88,9.9 8.55,9.9 C7.22,9.9 6.15,8.83 6.15,7.5 C6.15,6.17 7.22,5.1 8.55,5.1 Z"/>
-                            </Canvas>
-                        </Viewbox>
+                        <TextBlock Text="&#x2699;" Style="{StaticResource MenuIconTextStyle}"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </MenuItem>
+
+            <MenuItem Header="Pogled" Style="{StaticResource TopMenuItemStyle}">
+                <MenuItem Header="Privzeto"
+                          Style="{StaticResource SubMenuItemStyle}"
+                          IsCheckable="True"
+                          IsChecked="{Binding IsDefaultViewChecked}"
+                          Click="MenuPogled_Default"/>
+                <MenuItem Header="Alternativno"
+                          Style="{StaticResource SubMenuItemStyle}"
+                          IsCheckable="True"
+                          IsChecked="{Binding IsCompactView}"
+                          Click="MenuPogled_Compact"/>
+            </MenuItem>
         </Menu>
 
-        <!-- Status bar — Vaja 9: animiran indikator stanja -->
+        <!-- Status bar -->
         <Border DockPanel.Dock="Bottom"
-                Background="#FF0F172A"
-                Padding="16,6">
+                Background="{StaticResource BrBgDeep}"
+                BorderBrush="{StaticResource BrBorderSubtle}"
+                BorderThickness="0,1,0,0"
+                Padding="16,0"
+                Height="28">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -354,368 +355,468 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Ellipse Width="8"
-                             Height="8"
-                             Margin="0,0,8,0"
-                             VerticalAlignment="Center">
+                    <Ellipse Width="7" Height="7" Margin="0,0,7,0" VerticalAlignment="Center">
                         <Ellipse.Style>
                             <Style TargetType="Ellipse">
-                                <Setter Property="Fill" Value="#FFFBBF24"/>
+                                <Setter Property="Fill" Value="#F59E0B"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding AppData.CurrentUser.AutoSaveEnabled}" Value="True">
-                                        <Setter Property="Fill" Value="#FF4ADE80"/>
+                                        <Setter Property="Fill" Value="#10B981"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
                     <TextBlock Text="{Binding AutoSaveStatusText}"
-                               Foreground="#FF94A3B8"
+                               Foreground="{StaticResource BrTextMuted}"
                                FontSize="12"
                                VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <StackPanel Grid.Column="1"
-                            Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                    <Ellipse Width="8"
-                             Height="8"
-                             Margin="0,0,8,0"
-                             VerticalAlignment="Center">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="7" Height="7" Margin="0,0,7,0" VerticalAlignment="Center">
                         <Ellipse.Style>
                             <Style TargetType="Ellipse">
-                                <Setter Property="Fill" Value="#FF475569"/>
+                                <Setter Property="Fill" Value="#475569"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsNetworkConnected}" Value="True">
-                                        <Setter Property="Fill" Value="#FF4ADE80"/>
+                                        <Setter Property="Fill" Value="#10B981"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Ellipse.Style>
                     </Ellipse>
                     <TextBlock Text="{Binding NetworkStatusText}"
-                               Foreground="#FF94A3B8"
+                               Foreground="{StaticResource BrTextMuted}"
                                FontSize="12"
                                VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <Grid Margin="18">
+        <!-- Main content -->
+        <Grid Margin="14,10,14,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="340"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="12"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border Grid.Column="0"
-                    Background="#FF121A2C"
-                    CornerRadius="28"
-                    Padding="22">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <Border Background="#FF202A3E"
-                            CornerRadius="22"
-                            Padding="18">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="76"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Grid Width="64" Height="64">
-                                <Ellipse Fill="#FF0B1120"
-                                         Stroke="#FF334155"
-                                         StrokeThickness="1"/>
-                                <Ellipse Margin="3">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding AppData.CurrentUser.ImagePath}" Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
-                            </Grid>
-
-                            <StackPanel Grid.Column="1" Margin="14,0,0,0">
-                                <StackPanel Orientation="Horizontal" Margin="0,2,0,10">
-                                    <TextBlock Text="{Binding AppData.CurrentUser.Nickname}"
-                                               FontSize="24"
-                                               FontWeight="SemiBold"
-                                               Foreground="White"/>
-                                    <Ellipse Width="10"
-                                             Height="10"
-                                             Margin="8,14,0,0"
-                                             VerticalAlignment="Top">
-                                        <Ellipse.Style>
-                                            <Style TargetType="Ellipse">
-                                                <Setter Property="Fill" Value="#94A3B8"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Online">
-                                                        <Setter Property="Fill" Value="#4ADE80"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Away">
-                                                        <Setter Property="Fill" Value="#FBBF24"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Busy">
-                                                        <Setter Property="Fill" Value="#F87171"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
-                                </StackPanel>
-                                <ComboBox Name="CurrentUserStatusComboBox"
-                                          Style="{StaticResource RoundedComboBoxStyle}"
-                                          Height="34"
-                                          MinWidth="150"
-                                          PreviewMouseWheel="ComboBox_PreviewMouseWheel"
-                                          SelectedItem="{Binding AppData.CurrentUser.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <sys:String>Online</sys:String>
-                                    <sys:String>Away</sys:String>
-                                    <sys:String>Busy</sys:String>
-                                </ComboBox>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <Grid Grid.Row="1"
-                          Margin="4,10,4,18">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Text="Stiki"
-                                       VerticalAlignment="Center"
-                                       Foreground="White"
-                                       FontSize="22"
-                                       FontWeight="SemiBold"/>
-
-                            <Border Grid.Column="1"
-                                    Background="#223A5F"
-                                    CornerRadius="14"
-                                    Padding="12,5"
-                                    VerticalAlignment="Center">
-                                <TextBlock Text="{Binding ContactCountText}"
-                                           Foreground="#BFDBFE"
-                                           FontSize="12"
-                                           FontWeight="SemiBold"/>
-                            </Border>
-                        </Grid>
-                    </Grid>
-
-                    <ListView Grid.Row="2"
-                              ItemsSource="{Binding AppData.Contacts}"
-                              SelectedItem="{Binding SelectedContact, Mode=TwoWay}"
-                              BorderThickness="0"
-                              Background="Transparent"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                              ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                        <ListView.ItemContainerStyle>
-                            <Style TargetType="ListViewItem">
-                                <Setter Property="Padding" Value="0"/>
-                                <Setter Property="Margin" Value="0,0,0,12"/>
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="ListViewItem">
-                                            <ContentPresenter/>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </ListView.ItemContainerStyle>
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Border Padding="14"
-                                        CornerRadius="20"
-                                        BorderThickness="1">
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Setter Property="Background" Value="#FF202A3E"/>
-                                            <Setter Property="BorderBrush" Value="#FF334155"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsMouseOver}" Value="True">
-                                                    <Setter Property="Background" Value="#FF263550"/>
-                                                    <Setter Property="BorderBrush" Value="#FF55657F"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
-                                                    <Setter Property="Background" Value="#FF3053A5"/>
-                                                    <Setter Property="BorderBrush" Value="#FFA6C8FF"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="58"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid Width="48" Height="48">
-                                            <Ellipse Fill="#FF0B1120"/>
-                                            <Ellipse Margin="2">
-                                                <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="{Binding ImagePath}" Stretch="UniformToFill"/>
-                                                </Ellipse.Fill>
-                                            </Ellipse>
-                                        </Grid>
-
-                                        <StackPanel Grid.Column="1" Margin="12,0,0,0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Nickname}"
-                                                           Foreground="White"
-                                                           FontWeight="SemiBold"
-                                                           FontSize="17"/>
-                                                <Ellipse Width="10"
-                                                         Height="10"
-                                                         Margin="8,8,0,0"
-                                                         VerticalAlignment="Top">
-                                                    <Ellipse.Style>
-                                                        <Style TargetType="Ellipse">
-                                                            <Setter Property="Fill" Value="#94A3B8"/>
-                                                            <Style.Triggers>
-                                                                <DataTrigger Binding="{Binding Status}" Value="Online">
-                                                                    <Setter Property="Fill" Value="#4ADE80"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Status}" Value="Away">
-                                                                    <Setter Property="Fill" Value="#FBBF24"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger Binding="{Binding Status}" Value="Busy">
-                                                                    <Setter Property="Fill" Value="#F87171"/>
-                                                                </DataTrigger>
-                                                            </Style.Triggers>
-                                                        </Style>
-                                                    </Ellipse.Style>
-                                                </Ellipse>
-                                            </StackPanel>
-                                            <TextBlock Text="{Binding Email}"
-                                                       Foreground="#FFCBD5E1"
-                                                       FontSize="12"
-                                                       Margin="0,2,0,0"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </Border>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </Grid>
-            </Border>
-
-            <Grid Grid.Column="2">
+            <!-- ═══════════════ SIDEBAR ═══════════════ -->
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="6"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Border Background="#FFF7FAFF"
-                        CornerRadius="28"
-                        Padding="18"
-                        BorderBrush="#FFD8E4F6"
-                        BorderThickness="1">
+                <!-- User card -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource BrBgSecondary}"
+                        CornerRadius="16"
+                        BorderBrush="{StaticResource BrBorderSubtle}"
+                        BorderThickness="1"
+                        Padding="14,12">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="88"/>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <Grid Width="72" Height="72" VerticalAlignment="Center">
-                            <Ellipse Fill="#FFDCEBFF"/>
-                            <Ellipse Margin="4">
+                        <Grid Width="56" Height="56" VerticalAlignment="Center">
+                            <Ellipse Fill="{StaticResource BrBgDeep}"/>
+                            <Ellipse Margin="3">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding SelectedContact.ImagePath}" Stretch="UniformToFill"/>
+                                    <ImageBrush ImageSource="{Binding AppData.CurrentUser.ImagePath}" Stretch="UniformToFill"/>
                                 </Ellipse.Fill>
                             </Ellipse>
                         </Grid>
 
-                        <StackPanel Grid.Column="1"
-                                    Margin="18,0,0,0"
-                                    VerticalAlignment="Center">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=SelectedContact.Nickname, TargetNullValue=Izberi stik}"
-                                           FontSize="28"
+                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                <TextBlock Text="{Binding AppData.CurrentUser.Nickname}"
+                                           FontSize="17"
                                            FontWeight="SemiBold"
-                                           Foreground="#FF0F172A"/>
-                                <Ellipse Width="11"
-                                         Height="11"
-                                         Margin="10,14,0,0"
-                                         VerticalAlignment="Top">
+                                           Foreground="{StaticResource BrTextPrimary}"/>
+                                <Ellipse Width="9" Height="9" Margin="7,5,0,0" VerticalAlignment="Top">
                                     <Ellipse.Style>
                                         <Style TargetType="Ellipse">
-                                            <Setter Property="Fill" Value="#94A3B8"/>
+                                            <Setter Property="Fill" Value="#475569"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Online">
-                                                    <Setter Property="Fill" Value="#4ADE80"/>
+                                                <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Online">
+                                                    <Setter Property="Fill" Value="#10B981"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Away">
-                                                    <Setter Property="Fill" Value="#FBBF24"/>
+                                                <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Away">
+                                                    <Setter Property="Fill" Value="#F59E0B"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Busy">
-                                                    <Setter Property="Fill" Value="#F87171"/>
+                                                <DataTrigger Binding="{Binding AppData.CurrentUser.Status}" Value="Busy">
+                                                    <Setter Property="Fill" Value="#EF4444"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Ellipse.Style>
                                 </Ellipse>
                             </StackPanel>
-                            <TextBlock Text="{Binding Path=SelectedContact.Email, StringFormat=Email: {0}, TargetNullValue=Email: }"
-                                       Margin="0,5,0,0"
-                                       FontSize="14"
-                                       Foreground="#FF475569"/>
+                            <ComboBox Name="CurrentUserStatusComboBox"
+                                      Style="{StaticResource RoundedComboBoxStyle}"
+                                      Height="30"
+                                      PreviewMouseWheel="ComboBox_PreviewMouseWheel"
+                                      SelectedItem="{Binding AppData.CurrentUser.Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <sys:String>Online</sys:String>
+                                <sys:String>Away</sys:String>
+                                <sys:String>Busy</sys:String>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Search bar -->
+                <Border Grid.Row="2"
+                        Background="{StaticResource BrBgSecondary}"
+                        CornerRadius="14"
+                        BorderBrush="{StaticResource BrBorderSubtle}"
+                        BorderThickness="1"
+                        Height="40">
+                    <Grid Margin="12,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="&#x1F50D;"
+                                   Foreground="{StaticResource BrTextMuted}"
+                                   FontSize="13"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,6,0"/>
+                        <Grid Grid.Column="1">
+                            <TextBox Background="Transparent"
+                                     BorderThickness="0"
+                                     Foreground="{StaticResource BrTextPrimary}"
+                                     CaretBrush="{StaticResource BrAccent}"
+                                     FontSize="13"
+                                     VerticalContentAlignment="Center"
+                                     Text="{Binding ContactSearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0"
+                                     Padding="0"/>
+                            <TextBlock Text="Iskanje stikov..."
+                                       Foreground="{StaticResource BrTextMuted}"
+                                       FontSize="13"
+                                       VerticalAlignment="Center"
+                                       IsHitTestVisible="False">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding HasSearchText}" Value="False">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <Button Grid.Column="2"
+                                Content="&#x2715;"
+                                Foreground="{StaticResource BrTextMuted}"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                FontSize="12"
+                                Cursor="Hand"
+                                Padding="4,0"
+                                Click="ClearSearch_Click"
+                                Visibility="{Binding HasSearchText, Converter={StaticResource BoolToVis}}"/>
+                    </Grid>
+                </Border>
+
+                <!-- Contacts label row -->
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="STIKI"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="{StaticResource BrTextMuted}"
+                               VerticalAlignment="Center"
+                               Margin="2,0,0,0"/>
+                    <Border Grid.Column="1"
+                            Background="{StaticResource BrAccent}"
+                            CornerRadius="10"
+                            Padding="8,3"
+                            VerticalAlignment="Center">
+                        <TextBlock Text="{Binding ContactCountText}"
+                                   Foreground="White"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"/>
+                    </Border>
+                </Grid>
+
+                <!-- Contacts list -->
+                <ListView Grid.Row="6"
+                          ItemsSource="{Binding ContactsView}"
+                          SelectedItem="{Binding SelectedContact, Mode=TwoWay}"
+                          BorderThickness="0"
+                          Background="Transparent"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0,0,0,6"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12"
+                                    CornerRadius="14"
+                                    BorderThickness="1"
+                                    Cursor="Hand">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
+                                        <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsMouseOver}" Value="True">
+                                                <Setter Property="Background" Value="#243347"/>
+                                                <Setter Property="BorderBrush" Value="#3B82F640"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListViewItem}, Path=IsSelected}" Value="True">
+                                                <Setter Property="Background" Value="#3B82F618"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource ContactSelectedBorderBrush}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Avatar -->
+                                    <Grid Width="44" Height="44" VerticalAlignment="Top" Margin="0,0,10,0">
+                                        <Ellipse Fill="{StaticResource BrBgDeep}"/>
+                                        <Ellipse Margin="2">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding ImagePath}" Stretch="UniformToFill"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                    </Grid>
+
+                                    <!-- Info column -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Nickname}"
+                                                       Foreground="{StaticResource BrTextPrimary}"
+                                                       FontWeight="SemiBold"
+                                                       FontSize="14"
+                                                       VerticalAlignment="Center"/>
+                                            <Ellipse Width="8" Height="8" Margin="6,3,0,0" VerticalAlignment="Top">
+                                                <Ellipse.Style>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Fill" Value="#475569"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Online">
+                                                                <Setter Property="Fill" Value="#10B981"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Away">
+                                                                <Setter Property="Fill" Value="#F59E0B"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Status}" Value="Busy">
+                                                                <Setter Property="Fill" Value="#EF4444"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Ellipse.Style>
+                                            </Ellipse>
+                                        </StackPanel>
+                                        <!-- Last message preview — hidden in compact view -->
+                                        <TextBlock Text="{Binding LastMessagePreview}"
+                                                   Foreground="{StaticResource BrTextMuted}"
+                                                   FontSize="12"
+                                                   Margin="0,3,0,0"
+                                                   TextTrimming="CharacterEllipsis"
+                                                   MaxWidth="180">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding DataContext.IsCompactView, RelativeSource={RelativeSource AncestorType=Window}}" Value="True">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <!-- Bottom buttons -->
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            Content="Poišči prijatelje"
+                            Style="{StaticResource GhostButtonStyle}"
+                            Height="36"
+                            Click="FindFriends_Click"/>
+                    <Button Grid.Column="2"
+                            Content="+ Dodaj stik"
+                            Style="{StaticResource AccentButtonStyle}"
+                            Height="36"
+                            Click="MenuAddContact_Click"/>
+                </Grid>
+            </Grid>
+
+            <!-- ═══════════════ CHAT AREA ═══════════════ -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Contact header -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource BrBgPrimary}"
+                        CornerRadius="16"
+                        BorderBrush="{StaticResource BrBorderSubtle}"
+                        BorderThickness="1"
+                        Padding="16,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Avatar -->
+                        <Grid Width="52" Height="52" VerticalAlignment="Center" Margin="0,0,14,0">
+                            <Ellipse Fill="{StaticResource BrBgDeep}"/>
+                            <Ellipse Margin="3">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding SelectedContact.ImagePath}" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </Grid>
+
+                        <!-- Name + email -->
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding SelectedContact.Nickname, TargetNullValue='Izberi stik'}"
+                                           FontSize="20"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource BrTextPrimary}"/>
+                                <Ellipse Width="10" Height="10" Margin="8,6,0,0" VerticalAlignment="Top">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#475569"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Online">
+                                                    <Setter Property="Fill" Value="#10B981"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Away">
+                                                    <Setter Property="Fill" Value="#F59E0B"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SelectedContact.Status}" Value="Busy">
+                                                    <Setter Property="Fill" Value="#EF4444"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                            </StackPanel>
+                            <TextBlock Text="{Binding SelectedContact.Email, TargetNullValue=''}"
+                                       FontSize="13"
+                                       Foreground="{StaticResource BrTextMuted}"
+                                       Margin="0,3,0,0"/>
                         </StackPanel>
 
-                        <StackPanel Grid.Column="2"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right">
+                        <!-- Last active -->
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
                             <TextBlock Text="Nazadnje aktiven"
                                        HorizontalAlignment="Right"
                                        FontSize="11"
                                        FontWeight="SemiBold"
-                                       Foreground="#FF7C8EAD"/>
-                            <Border Margin="0,6,0,0"
-                                    Background="#FFF4F8FF"
-                                    BorderBrush="#FFD7E6FF"
+                                       Foreground="{StaticResource BrTextMuted}"/>
+                            <Border Margin="0,5,0,0"
+                                    Background="{StaticResource BrBgSecondary}"
+                                    BorderBrush="{StaticResource BrBorderSubtle}"
                                     BorderThickness="1"
-                                    CornerRadius="16"
-                                    Padding="12,7">
-                                <TextBlock Text="{Binding Path=SelectedContact.LastActive, TargetNullValue=-}"
-                                           FontSize="14"
+                                    CornerRadius="12"
+                                    Padding="10,5">
+                                <TextBlock Text="{Binding SelectedContact.LastActive, TargetNullValue='-'}"
+                                           FontSize="13"
                                            FontWeight="SemiBold"
-                                           Foreground="#FF1D4ED8"
+                                           Foreground="{StaticResource BrAccent}"
                                            HorizontalAlignment="Center"
-                                           TextAlignment="Center"
-                                           MinWidth="54"/>
+                                           MinWidth="50"/>
                             </Border>
                         </StackPanel>
                     </Grid>
                 </Border>
 
-                <Border Grid.Row="1"
-                        Margin="0,18,0,18"
-                        Background="White"
-                        CornerRadius="28"
-                        Padding="22"
-                        BorderBrush="#FFE2E8F0"
+                <!-- Messages area -->
+                <Border Grid.Row="2"
+                        Background="{StaticResource BrBgDeep}"
+                        CornerRadius="16"
+                        BorderBrush="{StaticResource BrBorderSubtle}"
                         BorderThickness="1">
+                    <Grid>
+                    <!-- Empty state shown when no contact selected -->
+                    <TextBlock Text="Izberi stik za začetek pogovora"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="15"
+                               Foreground="{StaticResource BrTextMuted}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedContact}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                     <ScrollViewer Name="ChatScrollViewer"
-                                  VerticalScrollBarVisibility="Auto">
+                                  VerticalScrollBarVisibility="Auto"
+                                  Padding="16,8">
                         <ItemsControl ItemsSource="{Binding CurrentConversationMessages}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border x:Name="MessageBubble"
-                                            MaxWidth="340"
-                                            Margin="0,0,0,12"
-                                            Padding="16,12"
-                                            CornerRadius="20"
+                                            MaxWidth="400"
+                                            Margin="0,0,0,10"
+                                            Padding="14,10"
                                             Opacity="0">
                                         <Border.RenderTransform>
                                             <TranslateTransform/>
@@ -724,20 +825,16 @@
                                             <EventTrigger RoutedEvent="Border.Loaded">
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetName="MessageBubble"
-                                                            Storyboard.TargetProperty="Opacity"
-                                                            From="0" To="1"
-                                                            Duration="0:0:0.25">
+                                                        <DoubleAnimation Storyboard.TargetName="MessageBubble"
+                                                                         Storyboard.TargetProperty="Opacity"
+                                                                         From="0" To="1" Duration="0:0:0.25">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <QuadraticEase EasingMode="EaseOut"/>
                                                             </DoubleAnimation.EasingFunction>
                                                         </DoubleAnimation>
-                                                        <DoubleAnimation
-                                                            Storyboard.TargetName="MessageBubble"
-                                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
-                                                            From="14" To="0"
-                                                            Duration="0:0:0.25">
+                                                        <DoubleAnimation Storyboard.TargetName="MessageBubble"
+                                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                         From="14" To="0" Duration="0:0:0.25">
                                                             <DoubleAnimation.EasingFunction>
                                                                 <QuadraticEase EasingMode="EaseOut"/>
                                                             </DoubleAnimation.EasingFunction>
@@ -752,48 +849,63 @@
                                                           Style="{StaticResource DeleteMenuItemStyle}"
                                                           Click="DeleteChatMessage_Click">
                                                     <MenuItem.Icon>
-                                                        <TextBlock Text="&#x1F5D1;"
-                                                                   Foreground="#FFDC2626"
-                                                                   FontSize="13"/>
+                                                        <TextBlock Text="&#x1F5D1;" Foreground="#EF4444" FontSize="12"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                             </ContextMenu>
                                         </Border.ContextMenu>
                                         <Border.Style>
                                             <Style TargetType="Border">
-                                                <Setter Property="Background" Value="#FF94A3B8"/>
+                                                <!-- Receiver bubble: left aligned, BgSecondary, rounded except bottom-left -->
+                                                <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
+                                                <Setter Property="BorderBrush" Value="{StaticResource BrBorderSubtle}"/>
+                                                <Setter Property="BorderThickness" Value="1"/>
+                                                <Setter Property="CornerRadius" Value="18,18,18,4"/>
                                                 <Setter Property="HorizontalAlignment" Value="Left"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
-                                                        <Setter Property="Background" Value="#FF3053A5"/>
+                                                        <!-- Sender bubble: right aligned, accent gradient, rounded except bottom-right -->
+                                                        <Setter Property="Background" Value="{StaticResource BrAccentGradient}"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="CornerRadius" Value="18,18,4,18"/>
                                                         <Setter Property="HorizontalAlignment" Value="Right"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Border.Style>
-                                        <TextBlock Text="{Binding Text}"
-                                                   TextWrapping="Wrap"
-                                                   FontSize="15"
-                                                   LineHeight="24">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Setter Property="Foreground" Value="White"/>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
-                                                            <Setter Property="Foreground" Value="White"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
+                                        <StackPanel>
+                                            <!-- Sender name (only for contact messages) -->
+                                            <TextBlock Text="{Binding SenderName}"
+                                                       FontSize="11"
+                                                       Foreground="{StaticResource BrTextMuted}"
+                                                       Margin="0,0,0,4">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding Text}"
+                                                       TextWrapping="Wrap"
+                                                       FontSize="14"
+                                                       LineHeight="22"
+                                                       Foreground="{StaticResource BrTextPrimary}"/>
+                                        </StackPanel>
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </ScrollViewer>
+                    </Grid>
                 </Border>
 
-                <local:MessageComposerControl Grid.Row="2"
+                <!-- Composer -->
+                <local:MessageComposerControl Grid.Row="4"
                                               x:Name="MessageComposer"
                                               MessageText="{Binding ComposerMessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               SendMessageRequested="MessageComposer_SendMessageRequested"/>

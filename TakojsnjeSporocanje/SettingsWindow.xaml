@@ -6,23 +6,26 @@
         Height="680"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
-        Background="#FFF4F7FB"
+        Background="#0A0F1E"
         FontFamily="Segoe UI">
 
     <Window.Resources>
+
         <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#FF1E293B"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="13"/>
         </Style>
 
         <Style TargetType="TextBox">
-            <Setter Property="Margin" Value="0,6,0,12"/>
+            <Setter Property="Margin" Value="0,4,0,14"/>
             <Setter Property="Height" Value="40"/>
-            <Setter Property="Padding" Value="12,0"/>
-            <Setter Property="BorderBrush" Value="#FFD5DCEA"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="BorderBrush" Value="#FFFFFF12"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="#FF0F172A"/>
-            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="Background" Value="#1E293B"/>
+            <Setter Property="CaretBrush" Value="#3B82F6"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -32,29 +35,40 @@
                         <Border Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="16">
+                                CornerRadius="12">
                             <ScrollViewer x:Name="PART_ContentHost"
                                           Margin="{TemplateBinding Padding}"
                                           VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="BorderBrush" Value="#3B82F6"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#F1F5F9"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
         <Style TargetType="Button">
             <Setter Property="Margin" Value="0,0,10,0"/>
-            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Padding" Value="16,10"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}"
-                                CornerRadius="16"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -67,17 +81,19 @@
         </Style>
 
         <Style TargetType="TabItem">
-            <Setter Property="Foreground" Value="#FF334155"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
             <Setter Property="Padding" Value="18,10"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
                         <Border x:Name="TabBorder"
-                                Background="#FFE8EEF9"
-                                CornerRadius="16"
+                                Background="#1E293B"
+                                BorderBrush="#FFFFFF12"
+                                BorderThickness="1"
+                                CornerRadius="14"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center"
                                               VerticalAlignment="Center"
@@ -85,14 +101,19 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="TabBorder" Property="Background" Value="#FF2563EB"/>
+                                <Setter TargetName="TabBorder" Property="Background" Value="{StaticResource BrAccentGradient}"/>
+                                <Setter TargetName="TabBorder" Property="BorderThickness" Value="0"/>
                                 <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="BorderBrush" Value="#3B82F6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
     </Window.Resources>
 
     <Grid Margin="18">
@@ -101,30 +122,36 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Background="White"
-                CornerRadius="28"
+        <Border Background="#0F172A"
+                CornerRadius="20"
                 Padding="22"
-                BorderBrush="#FFE2E8F0"
+                BorderBrush="#FFFFFF12"
                 BorderThickness="1">
             <TabControl>
+
+                <!-- Osebni podatki tab -->
                 <TabItem Header="Osebni podatki">
-                    <Border Background="#FFF8FAFC"
-                            CornerRadius="20"
+                    <Border Background="#1E293B"
+                            CornerRadius="16"
                             Padding="20"
-                            Margin="0,16,0,0">
+                            Margin="0,14,0,0"
+                            BorderBrush="#FFFFFF12"
+                            BorderThickness="1">
                         <ScrollViewer VerticalScrollBarVisibility="Auto"
                                       HorizontalScrollBarVisibility="Disabled">
                             <Grid Margin="0,0,6,0">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="190"/>
+                                    <ColumnDefinition Width="180"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                                    <Grid Width="160" Height="160" HorizontalAlignment="Center">
-                                        <Ellipse Fill="#FFEFF4FB"
-                                                 Stroke="#FFD5DCEA"
-                                                 StrokeThickness="1"/>
+                                <!-- Avatar -->
+                                <StackPanel Grid.Column="0" Margin="0,0,20,0" HorizontalAlignment="Center">
+                                    <Grid Width="150" Height="150" HorizontalAlignment="Center">
+                                        <Ellipse Fill="#0F172A"
+                                                 Stroke="#FFFFFF12"
+                                                 StrokeThickness="1">
+                                        </Ellipse>
                                         <Ellipse Margin="4">
                                             <Ellipse.Fill>
                                                 <ImageBrush ImageSource="{Binding EditableProfile.ImagePath}" Stretch="UniformToFill"/>
@@ -133,12 +160,13 @@
                                     </Grid>
 
                                     <Button Content="{Binding ImageButtonText}"
-                                            Margin="0,18,0,0"
-                                            Background="#FFE8EEF9"
-                                            Foreground="#FF1D4ED8"
+                                            Margin="0,16,0,0"
+                                            Background="#222238"
+                                            Foreground="#60A5FA"
                                             Click="LoadImage_Click"/>
                                 </StackPanel>
 
+                                <!-- Fields -->
                                 <StackPanel Grid.Column="1">
                                     <TextBlock Text="Vzdevek" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.Nickname, UpdateSourceTrigger=PropertyChanged}"/>
@@ -149,19 +177,19 @@
                                     <TextBlock Text="Email" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.Email, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <TextBlock Text="Telefonska &#353;tevilka" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Telefonska številka" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.Phone, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <TextBlock Text="Kraj" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.City, UpdateSourceTrigger=PropertyChanged}"/>
 
-                                    <TextBlock Text="Dr&#382;ava" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Država" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.Country, UpdateSourceTrigger=PropertyChanged}"/>
 
                                     <TextBlock Text="Opis" FontWeight="SemiBold"/>
                                     <TextBox Text="{Binding EditableProfile.About, UpdateSourceTrigger=PropertyChanged}"
-                                             Height="110"
-                                             Padding="12,10"
+                                             Height="100"
+                                             Padding="14,10"
                                              AcceptsReturn="True"
                                              TextWrapping="Wrap"
                                              VerticalContentAlignment="Top"/>
@@ -171,48 +199,57 @@
                     </Border>
                 </TabItem>
 
+                <!-- Samodejno shranjevanje tab -->
                 <TabItem Header="Samodejno shranjevanje">
-                    <Border Background="#FFF8FAFC"
-                            CornerRadius="20"
+                    <Border Background="#1E293B"
+                            CornerRadius="16"
                             Padding="24"
-                            Margin="0,16,0,0">
+                            Margin="0,14,0,0"
+                            BorderBrush="#FFFFFF12"
+                            BorderThickness="1">
                         <StackPanel>
                             <TextBlock Text="Samodejno shranjevanje"
-                                       FontSize="22"
-                                       FontWeight="SemiBold"/>
-                            <CheckBox x:Name="AutoSaveCheckBox"
-                                      Content="Omogo&#269;i samodejno shranjevanje"
-                                      IsChecked="{Binding EditableProfile.AutoSaveEnabled, Mode=TwoWay}"
-                                      Margin="0,20,0,14"
-                                      FontSize="15"/>
-                            <TextBlock Text="&#268;asovni interval v minutah"
+                                       FontSize="20"
                                        FontWeight="SemiBold"
-                                       IsEnabled="{Binding IsChecked, ElementName=AutoSaveCheckBox}"/>
+                                       Foreground="#F1F5F9"
+                                       Margin="0,0,0,16"/>
+                            <CheckBox x:Name="AutoSaveCheckBox"
+                                      Content="Omogoči samodejno shranjevanje"
+                                      IsChecked="{Binding EditableProfile.AutoSaveEnabled, Mode=TwoWay}"
+                                      Margin="0,0,0,16"
+                                      FontSize="14"/>
+                            <TextBlock Text="Časovni interval v minutah"
+                                       FontWeight="SemiBold"
+                                       IsEnabled="{Binding IsChecked, ElementName=AutoSaveCheckBox}"
+                                       Margin="0,0,0,4"/>
                             <TextBox Width="140"
                                      HorizontalAlignment="Left"
                                      IsEnabled="{Binding IsChecked, ElementName=AutoSaveCheckBox}"
                                      Text="{Binding EditableProfile.AutoSaveIntervalMinutes, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBlock Margin="0,20,0,0"
-                                       Foreground="#FF475569"
+                            <TextBlock Margin="0,16,0,0"
+                                       Foreground="#475569"
                                        TextWrapping="Wrap"
                                        Text="Podatki se samodejno shranijo v datoteko chat-data.xml v mapi aplikacije."/>
                         </StackPanel>
                     </Border>
                 </TabItem>
+
             </TabControl>
         </Border>
 
+        <!-- Buttons -->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Right"
-                    Margin="0,18,0,0">
-            <Button Content="Prekli&#269;i"
-                    Background="#FFE5E7EB"
-                    Foreground="#FF0F172A"
+                    Margin="0,16,0,0">
+            <Button Content="Prekliči"
+                    Background="#1E293B"
+                    Foreground="#94A3B8"
                     Click="Cancel_Click"/>
             <Button Content="Shrani"
-                    Background="#FF2563EB"
+                    Background="{StaticResource BrAccentGradient}"
                     Foreground="White"
+                    Margin="0"
                     Click="Save_Click"/>
         </StackPanel>
     </Grid>

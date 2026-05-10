@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Xml.Serialization;
@@ -94,6 +95,59 @@ namespace TakojsnjeSporocanje
             }
         }
 
+        // Contact search
+        private string contactSearchText = string.Empty;
+        public string ContactSearchText
+        {
+            get => contactSearchText;
+            set
+            {
+                contactSearchText = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasSearchText));
+                ContactsView?.Refresh();
+            }
+        }
+        public bool HasSearchText => !string.IsNullOrEmpty(contactSearchText);
+
+        // Filtered contacts view
+        private ICollectionView contactsView;
+        public ICollectionView ContactsView
+        {
+            get => contactsView;
+            private set { contactsView = value; OnPropertyChanged(); }
+        }
+
+        private void RebuildContactsView()
+        {
+            ContactsView = CollectionViewSource.GetDefaultView(AppData.Contacts);
+            ContactsView.Filter = FilterContact;
+        }
+
+        private bool FilterContact(object obj)
+        {
+            if (string.IsNullOrWhiteSpace(contactSearchText)) return true;
+            if (obj is Contact c)
+                return c.Nickname.Contains(contactSearchText, StringComparison.OrdinalIgnoreCase) ||
+                       (c.Email?.Contains(contactSearchText, StringComparison.OrdinalIgnoreCase) == true);
+            return false;
+        }
+
+        // Layout toggle
+        private bool isCompactView;
+        public bool IsCompactView
+        {
+            get => isCompactView;
+            set { isCompactView = value; OnPropertyChanged(); IsDefaultViewChecked = !value; }
+        }
+
+        private bool isDefaultViewChecked = true;
+        public bool IsDefaultViewChecked
+        {
+            get => isDefaultViewChecked;
+            set { isDefaultViewChecked = value; OnPropertyChanged(); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -101,6 +155,7 @@ namespace TakojsnjeSporocanje
             AppData = CreateDefaultData();
             AttachDataHandlers(AppData);
             LoadStartupData();
+            RebuildContactsView();
 
             DataContext = this;
             SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
@@ -391,6 +446,16 @@ namespace TakojsnjeSporocanje
             Dispatcher.BeginInvoke(new Action(() => ChatScrollViewer.ScrollToEnd()), DispatcherPriority.Background);
         }
 
+        private void MenuPogled_Default(object sender, RoutedEventArgs e) => IsCompactView = false;
+        private void MenuPogled_Compact(object sender, RoutedEventArgs e) => IsCompactView = true;
+
+        private void FindFriends_Click(object sender, RoutedEventArgs e)
+        {
+            ModernDialogWindow.ShowInfo(this, "Poišči prijatelje", "Funkcija iskanja prijateljev bo kmalu na voljo.");
+        }
+
+        private void ClearSearch_Click(object sender, RoutedEventArgs e) => ContactSearchText = string.Empty;
+
         private void ComboBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (sender is ComboBox comboBox && !comboBox.IsDropDownOpen)
@@ -609,6 +674,8 @@ namespace TakojsnjeSporocanje
             OnPropertyChanged(nameof(ContactCountText));
 
             SelectedContact = AppData.Contacts.Count > 0 ? AppData.Contacts[0] : null;
+
+            RebuildContactsView();
 
             isUpdatingData = false;
 
