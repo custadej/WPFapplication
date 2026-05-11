@@ -21,32 +21,117 @@
             <Setter Property="FontSize" Value="13"/>
         </Style>
 
-        <Style TargetType="MenuItem">
-            <Setter Property="Padding" Value="12,8"/>
-            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
-            <Setter Property="Background" Value="Transparent"/>
+        <Style x:Key="TopMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Background"       Value="Transparent"/>
+            <Setter Property="Foreground"       Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="BorderBrush"      Value="Transparent"/>
+            <Setter Property="BorderThickness"  Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding"          Value="12,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="4">
+                            <ContentPresenter Content="{TemplateBinding Header}"
+                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                              RecognizesAccessKey="True"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
+                                <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsSubmenuOpen" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
+                                <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
-        <Style x:Key="TopMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-            <Style.Triggers>
-                <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrHoverOverlay}"/>
-                </Trigger>
-                <Trigger Property="IsSubmenuOpen" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrBorderSubtle}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SubMenuItemStyle" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
-            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
-            <Setter Property="Background" Value="{StaticResource BrBgSecondary}"/>
-            <Setter Property="Padding" Value="10,8"/>
-            <Style.Triggers>
-                <Trigger Property="IsHighlighted" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrBorderGlow}"/>
-                </Trigger>
-            </Style.Triggers>
+        <Style x:Key="SubMenuItemStyle" TargetType="MenuItem">
+            <Setter Property="Background"       Value="{StaticResource BrBgSecondary}"/>
+            <Setter Property="Foreground"       Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="BorderBrush"      Value="Transparent"/>
+            <Setter Property="BorderThickness"  Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Padding"          Value="10,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter x:Name="Icon"
+                                                  Grid.Column="0"
+                                                  Content="{TemplateBinding Icon}"
+                                                  Width="20" Height="20"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,8,0"/>
+                                <Border x:Name="GlyphPanel"
+                                        Grid.Column="0"
+                                        Visibility="Collapsed"
+                                        Width="20" Height="20"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,8,0">
+                                    <Path Data="M2,6 L6,10.5 L14,2.5"
+                                          Stroke="{StaticResource BrAccent}"
+                                          StrokeThickness="1.5"
+                                          VerticalAlignment="Center"
+                                          HorizontalAlignment="Center"/>
+                                </Border>
+                                <ContentPresenter Grid.Column="1"
+                                                  Content="{TemplateBinding Header}"
+                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                                  ContentStringFormat="{TemplateBinding HeaderStringFormat}"
+                                                  VerticalAlignment="Center"
+                                                  RecognizesAccessKey="True"/>
+                                <TextBlock Grid.Column="2"
+                                           Text="{TemplateBinding InputGestureText}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           Opacity="0.6"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Icon" Value="{x:Null}">
+                                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible"/>
+                                <Setter TargetName="Icon"        Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
+                                <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="MenuIconStyle" TargetType="TextBlock">
