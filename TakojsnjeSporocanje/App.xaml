@@ -22,6 +22,7 @@
         <Color x:Key="ColBorderSubtle">#10FFFFFF</Color>
         <Color x:Key="ColBorderGlow">#506366F1</Color>
         <Color x:Key="ColHoverOverlay">#0AFFFFFF</Color>
+        <Color x:Key="ColAccentMuted">#3B3F6E</Color>
 
         <!-- ═══ BRUSHES ═══ -->
         <SolidColorBrush x:Key="BrBgDeep"        Color="{StaticResource ColBgDeep}"/>
@@ -40,6 +41,7 @@
         <SolidColorBrush x:Key="BrBorderSubtle"  Color="{StaticResource ColBorderSubtle}"/>
         <SolidColorBrush x:Key="BrBorderGlow"    Color="{StaticResource ColBorderGlow}"/>
         <SolidColorBrush x:Key="BrHoverOverlay"  Color="{StaticResource ColHoverOverlay}"/>
+        <SolidColorBrush x:Key="BrAccentMuted"   Color="{StaticResource ColAccentMuted}"/>
 
         <LinearGradientBrush x:Key="BrAccentGradient" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#4F46E5" Offset="0"/>
@@ -56,6 +58,19 @@
         <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}"                Color="#E2E8F0"/>
         <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}"                    Color="#1A1D2E"/>
         <SolidColorBrush x:Key="{x:Static SystemColors.WindowTextBrushKey}"                 Color="#E2E8F0"/>
+
+        <!-- ═══ GLOBAL MENUITEM — unified violet hover ═══ -->
+        <Style TargetType="MenuItem">
+            <Setter Property="Background"  Value="Transparent"/>
+            <Setter Property="Foreground"  Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsHighlighted" Value="True">
+                    <Setter Property="Background" Value="{StaticResource BrAccentMuted}"/>
+                    <Setter Property="Foreground" Value="{StaticResource BrAccent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <!-- ═══ GLOBAL TOGGLEBUTTON — eliminates WPF default orange hover ═══ -->
         <Style TargetType="ToggleButton">
