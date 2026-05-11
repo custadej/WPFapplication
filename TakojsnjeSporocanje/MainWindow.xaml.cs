@@ -531,8 +531,8 @@ namespace TakojsnjeSporocanje
 
         private void MenuCustom_Click(object sender, RoutedEventArgs e)
         {
-            bool wasDark = MenuDark.IsChecked;
-            bool wasLight = MenuLight.IsChecked;
+            bool wasDark = MenuDark.IsChecked == true;
+            bool wasLight = MenuLight.IsChecked == true;
             var dlg = new CustomThemeWindow { Owner = this };
             if (dlg.ShowDialog() == true)
             {

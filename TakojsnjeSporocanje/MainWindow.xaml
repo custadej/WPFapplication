@@ -12,42 +12,31 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
-        <!-- ── MENU ── -->
-        <Style TargetType="Menu">
-            <Setter Property="Background" Value="{StaticResource BrBgDeep}"/>
-            <Setter Property="Foreground" Value="{StaticResource BrTextPrimary}"/>
-            <Setter Property="Padding" Value="4,0"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="FontSize" Value="13"/>
-        </Style>
-
-        <Style x:Key="TopMenuItemStyle" TargetType="MenuItem">
+        <!-- ── MENU BAR BUTTONS ── -->
+        <Style x:Key="MenuTopButtonStyle" TargetType="ToggleButton">
             <Setter Property="Background"       Value="Transparent"/>
             <Setter Property="Foreground"       Value="{StaticResource BrTextPrimary}"/>
             <Setter Property="BorderBrush"      Value="Transparent"/>
             <Setter Property="BorderThickness"  Value="0"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Padding"          Value="12,8"/>
+            <Setter Property="Cursor"           Value="Hand"/>
+            <Setter Property="Padding"          Value="12,6"/>
+            <Setter Property="FontSize"         Value="13"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="MenuItem">
+                    <ControlTemplate TargetType="ToggleButton">
                         <Border x:Name="Bd"
                                 Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}"
-                                CornerRadius="4">
-                            <ContentPresenter Content="{TemplateBinding Header}"
-                                              ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                              RecognizesAccessKey="True"
-                                              VerticalAlignment="Center"/>
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsHighlighted" Value="True">
+                            <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
                                 <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
                             </Trigger>
-                            <Trigger Property="IsSubmenuOpen" Value="True">
+                            <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
                                 <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
                             </Trigger>
@@ -60,68 +49,80 @@
             </Setter>
         </Style>
 
-        <Style x:Key="SubMenuItemStyle" TargetType="MenuItem">
-            <Setter Property="Background"       Value="{StaticResource BrBgSecondary}"/>
-            <Setter Property="Foreground"       Value="{StaticResource BrTextPrimary}"/>
-            <Setter Property="BorderBrush"      Value="Transparent"/>
-            <Setter Property="BorderThickness"  Value="0"/>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-            <Setter Property="Padding"          Value="10,8"/>
+        <Style x:Key="DropdownItemStyle" TargetType="Button">
+            <Setter Property="Background"                Value="Transparent"/>
+            <Setter Property="Foreground"                Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="BorderBrush"               Value="Transparent"/>
+            <Setter Property="BorderThickness"           Value="0"/>
+            <Setter Property="FocusVisualStyle"          Value="{x:Null}"/>
+            <Setter Property="Cursor"                    Value="Hand"/>
+            <Setter Property="Padding"                   Value="10,8"/>
+            <Setter Property="MinWidth"                  Value="160"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="MenuItem">
+                    <ControlTemplate TargetType="Button">
                         <Border x:Name="Bd"
                                 Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="True">
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
+                                <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.45"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DropdownCheckableStyle" TargetType="ToggleButton">
+            <Setter Property="Background"                Value="Transparent"/>
+            <Setter Property="Foreground"                Value="{StaticResource BrTextPrimary}"/>
+            <Setter Property="BorderBrush"               Value="Transparent"/>
+            <Setter Property="BorderThickness"           Value="0"/>
+            <Setter Property="FocusVisualStyle"          Value="{x:Null}"/>
+            <Setter Property="Cursor"                    Value="Hand"/>
+            <Setter Property="Padding"                   Value="10,8"/>
+            <Setter Property="MinWidth"                  Value="160"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup"/>
+                                    <ColumnDefinition Width="20"/>
                                     <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup"/>
                                 </Grid.ColumnDefinitions>
-                                <ContentPresenter x:Name="Icon"
-                                                  Grid.Column="0"
-                                                  Content="{TemplateBinding Icon}"
-                                                  Width="20" Height="20"
-                                                  VerticalAlignment="Center"
-                                                  Margin="0,0,8,0"/>
-                                <Border x:Name="GlyphPanel"
-                                        Grid.Column="0"
-                                        Visibility="Collapsed"
-                                        Width="20" Height="20"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,8,0">
-                                    <Path Data="M2,6 L6,10.5 L14,2.5"
-                                          Stroke="{StaticResource BrAccent}"
-                                          StrokeThickness="1.5"
-                                          VerticalAlignment="Center"
-                                          HorizontalAlignment="Center"/>
-                                </Border>
+                                <Path x:Name="Check"
+                                      Grid.Column="0"
+                                      Data="M2,6 L6,10 L14,2"
+                                      Stroke="{StaticResource BrAccent}"
+                                      StrokeThickness="1.5"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      Visibility="Collapsed"/>
                                 <ContentPresenter Grid.Column="1"
-                                                  Content="{TemplateBinding Header}"
-                                                  ContentTemplate="{TemplateBinding HeaderTemplate}"
-                                                  ContentStringFormat="{TemplateBinding HeaderStringFormat}"
-                                                  VerticalAlignment="Center"
-                                                  RecognizesAccessKey="True"/>
-                                <TextBlock Grid.Column="2"
-                                           Text="{TemplateBinding InputGestureText}"
-                                           VerticalAlignment="Center"
-                                           Margin="10,0,0,0"
-                                           Opacity="0.6"/>
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="Center"/>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="Icon" Value="{x:Null}">
-                                <Setter TargetName="Icon" Property="Visibility" Value="Collapsed"/>
-                            </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible"/>
-                                <Setter TargetName="Icon"        Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="Check" Property="Visibility" Value="Visible"/>
                             </Trigger>
-                            <Trigger Property="IsHighlighted" Value="True">
+                            <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="Bd" Property="Background" Value="{StaticResource BrAccentMuted}"/>
                                 <Setter Property="Foreground"                   Value="{StaticResource BrAccent}"/>
                             </Trigger>
@@ -374,62 +375,161 @@
     <DockPanel>
 
         <!-- ── MENU BAR ── -->
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Datoteka" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="Uvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuImport_Click">
-                    <MenuItem.Icon><TextBlock Text="↓" Style="{StaticResource MenuIconStyle}"/></MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Header="Izvozi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuExport_Click">
-                    <MenuItem.Icon><TextBlock Text="↑" Style="{StaticResource MenuIconStyle}"/></MenuItem.Icon>
-                </MenuItem>
-                <Separator Background="{StaticResource BrBorderSubtle}"/>
-                <MenuItem Header="Izhod" Style="{StaticResource SubMenuItemStyle}" Click="MenuExit_Click">
-                    <MenuItem.Icon><TextBlock Text="✕" Style="{StaticResource MenuIconStyle}" Foreground="{StaticResource BrBusy}"/></MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
+        <!-- ── CUSTOM MENUBAR ── -->
+        <Border DockPanel.Dock="Top"
+                Background="{StaticResource BrBgDeep}"
+                Height="36"
+                Padding="4,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
 
-            <MenuItem Header="Stiki" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="Dodaj..." Style="{StaticResource SubMenuItemStyle}" Click="MenuAddContact_Click">
-                    <MenuItem.Icon><TextBlock Text="+" Style="{StaticResource MenuIconStyle}" FontWeight="Bold"/></MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Name="RemoveContactMenuItem" Header="Odstrani" Style="{StaticResource SubMenuItemStyle}" Click="MenuRemoveContact_Click">
-                    <MenuItem.Icon><TextBlock Text="−" Style="{StaticResource MenuIconStyle}" FontWeight="Bold"/></MenuItem.Icon>
-                </MenuItem>
-                <MenuItem Name="EditContactMenuItem" Header="Uredi..." Style="{StaticResource SubMenuItemStyle}" Click="MenuEditContact_Click">
-                    <MenuItem.Icon><TextBlock Text="✎" Style="{StaticResource MenuIconStyle}"/></MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
+                <!-- Datoteka -->
+                <ToggleButton x:Name="BtnDatoteka" Content="Datoteka" Style="{StaticResource MenuTopButtonStyle}"/>
+                <Popup PlacementTarget="{Binding ElementName=BtnDatoteka}"
+                       IsOpen="{Binding IsChecked, ElementName=BtnDatoteka, Mode=TwoWay}"
+                       StaysOpen="False" Placement="Bottom" AllowsTransparency="True">
+                    <Border Background="{StaticResource BrBgSecondary}"
+                            BorderBrush="{StaticResource BrBorderSubtle}"
+                            BorderThickness="1" CornerRadius="8" Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#40000000" BlurRadius="16" ShadowDepth="4" Opacity="0.5"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Button Click="MenuImport_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="↓" Style="{StaticResource MenuIconStyle}"/>
+                                    <TextBlock Text="Uvozi..." Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="MenuExport_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="↑" Style="{StaticResource MenuIconStyle}"/>
+                                    <TextBlock Text="Izvozi..." Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Border Height="1" Background="{StaticResource BrBorderSubtle}" Margin="8,2"/>
+                            <Button Click="MenuExit_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="✕" Style="{StaticResource MenuIconStyle}" Foreground="{StaticResource BrBusy}"/>
+                                    <TextBlock Text="Izhod" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
 
-            <MenuItem Header="Omrežje" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem x:Name="NetworkConnectMenuItem" Header="Poveži se..." Style="{StaticResource SubMenuItemStyle}" Click="MenuNetwork_Click">
-                    <MenuItem.Icon><TextBlock Text="⇄" Style="{StaticResource MenuIconStyle}"/></MenuItem.Icon>
-                </MenuItem>
-                <MenuItem x:Name="NetworkDisconnectMenuItem" Header="Prekini povezavo" Style="{StaticResource SubMenuItemStyle}"
-                          IsEnabled="False" Click="MenuNetworkDisconnect_Click">
-                    <MenuItem.Icon><TextBlock Text="✕" Style="{StaticResource MenuIconStyle}" Foreground="{StaticResource BrBusy}"/></MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
+                <!-- Stiki -->
+                <ToggleButton x:Name="BtnStiki" Content="Stiki" Style="{StaticResource MenuTopButtonStyle}"/>
+                <Popup PlacementTarget="{Binding ElementName=BtnStiki}"
+                       IsOpen="{Binding IsChecked, ElementName=BtnStiki, Mode=TwoWay}"
+                       StaysOpen="False" Placement="Bottom" AllowsTransparency="True">
+                    <Border Background="{StaticResource BrBgSecondary}"
+                            BorderBrush="{StaticResource BrBorderSubtle}"
+                            BorderThickness="1" CornerRadius="8" Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#40000000" BlurRadius="16" ShadowDepth="4" Opacity="0.5"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Button Click="MenuAddContact_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="+" Style="{StaticResource MenuIconStyle}" FontWeight="Bold"/>
+                                    <TextBlock Text="Dodaj..." Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="RemoveContactMenuItem" Click="MenuRemoveContact_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="−" Style="{StaticResource MenuIconStyle}" FontWeight="Bold"/>
+                                    <TextBlock Text="Odstrani" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="EditContactMenuItem" Click="MenuEditContact_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="✎" Style="{StaticResource MenuIconStyle}"/>
+                                    <TextBlock Text="Uredi..." Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
 
-            <MenuItem Header="Orodja" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem Header="Nastavitve" Style="{StaticResource SubMenuItemStyle}" Click="MenuSettings_Click">
-                    <MenuItem.Icon><TextBlock Text="⚙" Style="{StaticResource MenuIconStyle}"/></MenuItem.Icon>
-                </MenuItem>
-            </MenuItem>
+                <!-- Omrežje -->
+                <ToggleButton x:Name="BtnOmrezje" Content="Omrežje" Style="{StaticResource MenuTopButtonStyle}"/>
+                <Popup PlacementTarget="{Binding ElementName=BtnOmrezje}"
+                       IsOpen="{Binding IsChecked, ElementName=BtnOmrezje, Mode=TwoWay}"
+                       StaysOpen="False" Placement="Bottom" AllowsTransparency="True">
+                    <Border Background="{StaticResource BrBgSecondary}"
+                            BorderBrush="{StaticResource BrBorderSubtle}"
+                            BorderThickness="1" CornerRadius="8" Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#40000000" BlurRadius="16" ShadowDepth="4" Opacity="0.5"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Button x:Name="NetworkConnectMenuItem" Click="MenuNetwork_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⇄" Style="{StaticResource MenuIconStyle}"/>
+                                    <TextBlock Text="Poveži se..." Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="NetworkDisconnectMenuItem" IsEnabled="False" Click="MenuNetworkDisconnect_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="✕" Style="{StaticResource MenuIconStyle}" Foreground="{StaticResource BrBusy}"/>
+                                    <TextBlock Text="Prekini povezavo" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
 
-            <MenuItem Header="Pogled" Style="{StaticResource TopMenuItemStyle}">
-                <MenuItem x:Name="MenuPrivzeto" Header="Privzeto" Style="{StaticResource SubMenuItemStyle}"
-                          IsCheckable="True" IsChecked="True" Click="MenuPrivzeto_Click"/>
-                <MenuItem x:Name="MenuAlternativno" Header="Alternativno" Style="{StaticResource SubMenuItemStyle}"
-                          IsCheckable="True" Click="MenuAlternativno_Click"/>
-                <Separator Background="{StaticResource BrBorderSubtle}"/>
-                <MenuItem x:Name="MenuDark" Header="🌙 Temni način" Style="{StaticResource SubMenuItemStyle}"
-                          IsCheckable="True" IsChecked="True" Click="MenuDark_Click"/>
-                <MenuItem x:Name="MenuLight" Header="☀️ Svetli način" Style="{StaticResource SubMenuItemStyle}"
-                          IsCheckable="True" Click="MenuLight_Click"/>
-                <MenuItem x:Name="MenuCustom" Header="🎨 Tema po meri..." Style="{StaticResource SubMenuItemStyle}"
-                          IsCheckable="True" Click="MenuCustom_Click"/>
-            </MenuItem>
-        </Menu>
+                <!-- Orodja -->
+                <ToggleButton x:Name="BtnOrodja" Content="Orodja" Style="{StaticResource MenuTopButtonStyle}"/>
+                <Popup PlacementTarget="{Binding ElementName=BtnOrodja}"
+                       IsOpen="{Binding IsChecked, ElementName=BtnOrodja, Mode=TwoWay}"
+                       StaysOpen="False" Placement="Bottom" AllowsTransparency="True">
+                    <Border Background="{StaticResource BrBgSecondary}"
+                            BorderBrush="{StaticResource BrBorderSubtle}"
+                            BorderThickness="1" CornerRadius="8" Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#40000000" BlurRadius="16" ShadowDepth="4" Opacity="0.5"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <Button Click="MenuSettings_Click" Style="{StaticResource DropdownItemStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="⚙" Style="{StaticResource MenuIconStyle}"/>
+                                    <TextBlock Text="Nastavitve" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <!-- Pogled -->
+                <ToggleButton x:Name="BtnPogled" Content="Pogled" Style="{StaticResource MenuTopButtonStyle}"/>
+                <Popup PlacementTarget="{Binding ElementName=BtnPogled}"
+                       IsOpen="{Binding IsChecked, ElementName=BtnPogled, Mode=TwoWay}"
+                       StaysOpen="False" Placement="Bottom" AllowsTransparency="True">
+                    <Border Background="{StaticResource BrBgSecondary}"
+                            BorderBrush="{StaticResource BrBorderSubtle}"
+                            BorderThickness="1" CornerRadius="8" Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#40000000" BlurRadius="16" ShadowDepth="4" Opacity="0.5"/>
+                        </Border.Effect>
+                        <StackPanel>
+                            <ToggleButton x:Name="MenuPrivzeto" IsChecked="True" Click="MenuPrivzeto_Click"
+                                          Style="{StaticResource DropdownCheckableStyle}" Content="Privzeto"/>
+                            <ToggleButton x:Name="MenuAlternativno" Click="MenuAlternativno_Click"
+                                          Style="{StaticResource DropdownCheckableStyle}" Content="Alternativno"/>
+                            <Border Height="1" Background="{StaticResource BrBorderSubtle}" Margin="8,2"/>
+                            <ToggleButton x:Name="MenuDark" IsChecked="True" Click="MenuDark_Click"
+                                          Style="{StaticResource DropdownCheckableStyle}" Content="🌙 Temni način"/>
+                            <ToggleButton x:Name="MenuLight" Click="MenuLight_Click"
+                                          Style="{StaticResource DropdownCheckableStyle}" Content="☀️ Svetli način"/>
+                            <ToggleButton x:Name="MenuCustom" Click="MenuCustom_Click"
+                                          Style="{StaticResource DropdownCheckableStyle}" Content="🎨 Tema po meri..."/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+            </StackPanel>
+        </Border>
 
         <!-- ── STATUS BAR ── -->
         <Border DockPanel.Dock="Bottom"
